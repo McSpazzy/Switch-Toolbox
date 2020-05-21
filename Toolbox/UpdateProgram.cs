@@ -25,6 +25,8 @@ namespace Toolbox
         {
             try
             {
+                return;
+
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 var client = new GitHubClient(new ProductHeaderValue("ST_UpdateTool"));
                 GetReleases(client).Wait();

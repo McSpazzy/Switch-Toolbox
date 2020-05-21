@@ -14,6 +14,7 @@ using Toolbox.Library.Forms;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Reflection;
+using System.Threading.Tasks;
 using OpenTK.Graphics.OpenGL;
 using Toolbox.Library.NodeWrappers;
 using Toolbox.Library.Rendering;
@@ -1381,19 +1382,37 @@ namespace Toolbox
 
         private List<string> failedFiles = new List<string>();
         private List<string> batchExportFileList = new List<string>();
-        private void BatchExportModels(string[] files, string outputFolder)
+        private async void BatchExportModels(string[] files, string outputFolder)
         {
             List<string> Formats = new List<string>();
             Formats.Add("DAE (.dae)");
 
             failedFiles = new List<string>();
 
+            var sw = new Stopwatch();
+            sw.Start();
+
             BatchFormatExport form = new BatchFormatExport(Formats);
             if (form.ShowDialog() == DialogResult.OK)
             {
+                sw.Start();
+                var progressBar = new STProgressBar();
+                progressBar.Task = "Exporting Models...";
+                progressBar.Value = 0;
+                progressBar.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+                progressBar.Width = 500;
+                progressBar.Show();
+                progressBar.Refresh();
+
+                var index = 0;
                 string extension = form.GetSelectedExtension();
                 foreach (var file in files)
                 {
+                    index++;
+                    progressBar.Value = index * (100 / files.Length);
+                    progressBar.Task = $"Exporting Model...{index}/{files.Length} | {Path.GetFileNameWithoutExtension(file)}";
+                    progressBar.Refresh();
+                   
                     IFileFormat fileFormat = null;
                     try
                     {
@@ -1404,9 +1423,11 @@ namespace Toolbox
                         failedFiles.Add($"{file} \n Error:\n {ex} \n");
                     }
 
-                    SearchFileFormat(form.BatchSettings, fileFormat, extension, outputFolder, ExportMode.Models);
+                    await Task.Run(async () => { await SearchFileFormat(form.BatchSettings, fileFormat, extension, outputFolder, ExportMode.Models, true); });
                 }
+
                 batchExportFileList.Clear();
+                progressBar.Close();
             }
             else
                 return;
@@ -1417,10 +1438,10 @@ namespace Toolbox
                 foreach (var file in failedFiles)
                     detailList += $"{file}\n";
 
-                STErrorDialog.Show("Some files failed to export! See detail list of failed files.", "Switch Toolbox", detailList);
+                STErrorDialog.Show($"Some files failed to export! See detail list of failed files.\n{files.Length} files. {sw.ElapsedMilliseconds}ms.\nFailed {failedFiles.Count}", "Switch Toolbox", detailList);
             }
             else
-                MessageBox.Show("Files batched successfully!");
+                MessageBox.Show($"Files batched successfully! {files.Length} files. {sw.ElapsedMilliseconds}ms.");
         }
 
         private void BatchExportTextures(string[] files, string outputFolder)
@@ -1451,7 +1472,7 @@ namespace Toolbox
                         failedFiles.Add($"{file} \n Error:\n {ex} \n");
                     }
 
-                    SearchFileFormat(form.BatchSettings, fileFormat, extension, outputFolder, ExportMode.Textures);
+                    SearchFileFormat(form.BatchSettings, fileFormat, extension, outputFolder, ExportMode.Textures, true);
                 }
                 batchExportFileList.Clear();
             }
@@ -1468,8 +1489,7 @@ namespace Toolbox
                 MessageBox.Show("Files batched successfully!");
         }
 
-        private void SearchFileFormat(BatchFormatExport.Settings settings, IFileFormat fileFormat, 
-            string extension, string outputFolder, ExportMode exportMode)
+        private async Task SearchFileFormat(BatchFormatExport.Settings settings, IFileFormat fileFormat, string extension, string outputFolder, ExportMode exportMode, bool suppressMessages)
         {
             if (fileFormat == null) return;
 
@@ -1478,7 +1498,7 @@ namespace Toolbox
                 ExportTexture(((STGenericTexture)fileFormat), settings, $"{outputFolder}/{name}", extension);
             }
             else if (fileFormat is IArchiveFile)
-                SearchArchive(settings, (IArchiveFile)fileFormat, extension, outputFolder, exportMode);
+                SearchArchive(settings, (IArchiveFile)fileFormat, extension, outputFolder, exportMode, suppressMessages);
             else if (fileFormat is ITextureContainer && exportMode == ExportMode.Textures)
             {
                 string name = fileFormat.FileName.Split('.').FirstOrDefault();
@@ -1506,6 +1526,7 @@ namespace Toolbox
 
                 DAE.ExportSettings daesettings = new DAE.ExportSettings();
                 daesettings.SuppressConfirmDialog = true;
+                daesettings.SuppressAllMessages = suppressMessages;
 
                 var model = new STGenericModel();
                 model.Materials = ((IExportableModel)fileFormat).ExportableMaterials;
@@ -1517,7 +1538,7 @@ namespace Toolbox
                 path = Utils.RenameDuplicateString(batchExportFileList, path, 0, 3);
                 batchExportFileList.Add(path);
 
-                DAE.Export($"{path}.{extension}", daesettings, model, textures, skeleton);
+                await Task.Run(() => { DAE.Export($"{path}.{extension}", daesettings, model, textures, skeleton); });
             }
 
             fileFormat.Unload();
@@ -1541,8 +1562,7 @@ namespace Toolbox
             Runtime.ImageEditor.UseComponetSelector = compSetting;
         }
 
-        private void SearchArchive(BatchFormatExport.Settings settings, IArchiveFile archiveFile,
-            string extension, string outputFolder, ExportMode exportMode)
+        private void SearchArchive(BatchFormatExport.Settings settings, IArchiveFile archiveFile, string extension, string outputFolder, ExportMode exportMode, bool suppressMessages)
         {
             string ArchiveFilePath = outputFolder;
             if (settings.SeperateArchiveFiles)
@@ -1552,11 +1572,26 @@ namespace Toolbox
             {
                 try
                 {
-                    SearchFileFormat(settings, file.OpenFile(), extension, ArchiveFilePath, exportMode);
+                    SearchFileFormat(settings, file.OpenFile(), extension, ArchiveFilePath, exportMode, suppressMessages);
                 }
                 catch (Exception ex)
                 {
                     failedFiles.Add($"{file} \n Error:\n {ex} \n");
+                }
+            }
+        }
+
+        private void BatchExportModelsFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var ofd = new FolderBrowserDialog();
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                var folderDlg = new FolderBrowserDialog();
+                if (folderDlg.ShowDialog() == DialogResult.OK)
+                {
+                    var filenames = Directory.GetFiles(ofd.SelectedPath);
+                    BatchExportModels(filenames, folderDlg.SelectedPath);
                 }
             }
         }

@@ -806,7 +806,8 @@ namespace FirstPlugin
             LoadMenus(IsWiiU);
        
             BFRESRender = new BFRESRender();
-            DrawableContainer.Name = FileName;
+            if (!Runtime.MainForm.InvokeRequired)
+                DrawableContainer.Name = FileName;
 
             BFRESRender.ModelTransform = MarioCostumeEditor.SetTransform(FileName);
             BFRESRender.ResFileNode = this;
@@ -832,7 +833,8 @@ namespace FirstPlugin
                 }
             }
 
-            DrawableContainer.Drawables.Add(BFRESRender);
+            if (!Runtime.MainForm.InvokeRequired)
+                DrawableContainer.Drawables.Add(BFRESRender);
 
             var Models = GetModels();
             if (Models != null)
@@ -840,7 +842,8 @@ namespace FirstPlugin
                 foreach (FMDL mdl in Models)
                 {
                     BFRESRender.models.Add(mdl);
-                    DrawableContainer.Drawables.Add(mdl.Skeleton);
+                    if (!Runtime.MainForm.InvokeRequired)
+                        DrawableContainer.Drawables.Add(mdl.Skeleton);
                 }
             }
         }

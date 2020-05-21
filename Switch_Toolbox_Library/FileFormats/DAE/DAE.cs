@@ -26,6 +26,7 @@ namespace Toolbox.Library
             public bool FlipTexCoordsVertical = true;
             public bool OnlyExportRiggedBones = false;
             public bool UseTextureChannelComponents = true;
+            public bool SuppressAllMessages = false;
 
             public bool TransformColorUVs = false;
 
@@ -70,12 +71,17 @@ namespace Toolbox.Library
 
             List<string> failedTextureExport = new List<string>();
 
-            STProgressBar progressBar = new STProgressBar();
-            progressBar.Task = "Exporting Model...";
-            progressBar.Value = 0;
-            progressBar.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            progressBar.Show();
-            progressBar.Refresh();
+            STProgressBar progressBar = null;
+
+            if (!settings.SuppressAllMessages)
+            {
+                progressBar = new STProgressBar();
+                progressBar.Task = "Exporting Model...";
+                progressBar.Value = 0;
+                progressBar.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+                progressBar.Show();
+                progressBar.Refresh();
+            }
 
             if (settings.UseOldExporter)
             {
@@ -103,9 +109,12 @@ namespace Toolbox.Library
 
                         if (settings.ExportTextures) {
 
-                            progressBar.Task = $"Exporting Texture {Textures[i].Text}";
-                            progressBar.Value = ((i * 100) / Textures.Count);
-                            progressBar.Refresh();
+                            if (!settings.SuppressAllMessages)
+                            {
+                                progressBar.Task = $"Exporting Texture {Textures[i].Text}";
+                                progressBar.Value = ((i * 100) / Textures.Count);
+                                progressBar.Refresh();
+                            }
 
                             try
                             {
@@ -262,9 +271,12 @@ namespace Toolbox.Library
                 writer.StartLibraryGeometries();
                 foreach (var mesh in Meshes)
                 {
-                    progressBar.Task = $"Exporting Mesh {mesh.Text}";
-                    progressBar.Value = ((meshIndex++ * 100) / Meshes.Count);
-                    progressBar.Refresh();
+                    if (!settings.SuppressAllMessages)
+                    {
+                        progressBar.Task = $"Exporting Mesh {mesh.Text}";
+                        progressBar.Value = ((meshIndex++ * 100) / Meshes.Count);
+                        progressBar.Refresh();
+                    }
 
                     int[] IndexTable = null;
                     if (NodeArray != null)
@@ -513,10 +525,13 @@ namespace Toolbox.Library
                 writer.EndGeometrySection();
             }
 
-            progressBar?.Close();
+            if (!settings.SuppressAllMessages)
+            {
+                progressBar?.Close();
+            }
 
             if (!settings.SuppressConfirmDialog)
-                System.Windows.Forms.MessageBox.Show($"Exported {FileName} Successfuly!");
+                System.Windows.Forms.MessageBox.Show($"Exported {FileName} Sucessfully!");
         }
 
 
