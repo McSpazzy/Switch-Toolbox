@@ -3,7 +3,6 @@ using System.IO;
 using System.IO.Compression;
 using K4os.Compression.LZ4.Streams;
 using System.Windows.Forms;
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System.Collections.Generic;
 using System.Linq;
 using System;
