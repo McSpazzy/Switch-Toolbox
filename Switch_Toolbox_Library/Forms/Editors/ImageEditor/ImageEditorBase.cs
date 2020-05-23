@@ -310,6 +310,7 @@ namespace Toolbox.Library.Forms
         public void LoadImage(STGenericTexture texture, int arrayLevel = 0)
         {
             editBtn.Enabled = false;
+            editToolStripMenuItem.Enabled = false;
 
             //Disable the file watcher when an image is switched
             FileWatcher.EnableRaisingEvents = false;
@@ -335,6 +336,7 @@ namespace Toolbox.Library.Forms
             if (ActiveTexture.CanEdit)
             {
                 editBtn.Enabled = true;
+                editToolStripMenuItem.Enabled = true;
                 editBtn.BackgroundImage = Properties.Resources.Edit;
             }
             else
