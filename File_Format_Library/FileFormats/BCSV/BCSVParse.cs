@@ -110,7 +110,7 @@ namespace FirstPlugin
                     }
 
                     if (Hashes.ContainsKey(fields[f].Hash))
-                        name = Hashes[fields[f].Hash];
+                        name = Hashes[fields[f].Hash].Split(' ')[0];
 
                     entry.Fields.Add(name, value);
                 }
