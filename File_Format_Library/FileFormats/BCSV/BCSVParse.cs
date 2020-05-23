@@ -98,6 +98,14 @@ namespace FirstPlugin
                             break;
                         case DataType.Int32:
                             value = reader.ReadInt32();
+
+                            var checkVal = BitConverter.ToUInt32(BitConverter.GetBytes((int)value), 0);
+                            if (Hashes.ContainsKey(checkVal))
+                            {
+                                value = Hashes[checkVal];
+                                break;
+                            }
+
                             if (IsFloatValue((int)value))
                             {
                                 reader.Seek(-4);
