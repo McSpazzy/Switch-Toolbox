@@ -391,7 +391,9 @@
     <Content Include="Hashes\BSCVVals.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Hashes\BYMLHash.txt" />
+    <Content Include="Hashes\BYMLHash.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Lib\aamp_hashed_names.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
