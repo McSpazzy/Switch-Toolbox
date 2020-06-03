@@ -1098,11 +1098,9 @@ namespace Toolbox.Library.Forms
                     SaveAndApplyImage(new Bitmap(FileName), DecodeTextureBack);
                 }
             }
-            else
-            {
-                FileWatcher.Filter = "";
-                FileWatcher.EnableRaisingEvents = false;
-            }
+
+            FileWatcher.Filter = "";
+            FileWatcher.EnableRaisingEvents = false;
         }
 
         public void SaveAndApplyImage(Bitmap image, bool DecodeBack)
