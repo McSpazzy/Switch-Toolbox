@@ -103,6 +103,7 @@ namespace FirstPlugin
                             if (Hashes.ContainsKey(checkVal))
                             {
                                 value = Hashes[checkVal];
+                                type = DataType.String;
                                 break;
                             }
 
@@ -110,7 +111,15 @@ namespace FirstPlugin
                             {
                                 reader.Seek(-4);
                                 value = reader.ReadSingle();
+                                type = DataType.Float;
                             }
+
+                            if (value.ToString().Contains("E+") || value.ToString().Contains("E-"))
+                            {
+                                value = checkVal.ToString("X");
+                                type = DataType.String;
+                            }
+
                             break;
                         case DataType.String:
                             value = reader.ReadZeroTerminatedString(Encoding.UTF8);
@@ -118,11 +127,43 @@ namespace FirstPlugin
                     }
 
                     if (Hashes.ContainsKey(fields[f].Hash))
+                    {
                         name = Hashes[fields[f].Hash].Split(' ')[0];
-
+                    }
+                    else
+                    {
+                        if (type == DataType.String)
+                        {
+                            if (size > 4)
+                            {
+                                name += " string" + size;
+                            }
+                            else
+                            {
+                                name += " string";
+                            }
+                        }
+                        else
+                        {
+                            switch (type)
+                            {
+                                case DataType.Byte:
+                                    name += " u8";
+                                    break;
+                                case DataType.Int16:
+                                    name += " u16";
+                                    break;
+                                case DataType.Int32:
+                                    name += " u32";
+                                    break;
+                                case DataType.Float:
+                                    name += " f32";
+                                    break;
+                            }
+                        }
+                    }
                     entry.Fields.Add(name, value);
                 }
-
                 reader.SeekBegin(pos + entrySize);
             }
         }
