@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Toolbox;
 using System.Windows.Forms;
+using FirstPlugin.FileFormats.Message;
 using Toolbox.Library;
 using FirstPlugin.Forms;
 using Toolbox.Library.IO;
@@ -290,7 +292,8 @@ namespace FirstPlugin
 
             public string GetText(Encoding encoding)
             {
-                return encoding.GetString(Data);
+                var newData = MSBTFunctions.ReplaceFunctions(Data);
+                return encoding.GetString(newData);
             }
 
             public byte[] ToBytes(Encoding encoding, bool isBigEndian)
