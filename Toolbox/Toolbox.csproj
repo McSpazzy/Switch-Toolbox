@@ -385,6 +385,7 @@
     <None Include="Hashes\ACNH.old">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Hashes\Bad.txt" />
     <Content Include="Hashes\BSCVHash.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

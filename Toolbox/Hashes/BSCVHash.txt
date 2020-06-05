@@ -954,7 +954,7 @@ VillagerOpenNum u32
 CustomizeSortID u16
 LifeMotif u8
 UseChimneySmoke u8
-ArriveDist f32 # maybe, might be a collision
+ArriveDist f32
 FashionThemeFomal u8
 FashionThemeFairyland u8
 StampRackNameTextLabel string32
