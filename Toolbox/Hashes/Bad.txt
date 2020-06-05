@@ -1,0 +1,29 @@
+﻿FieldProjection string93
+AhnDecorate0 string66
+AhnDecorate1 string66
+AhnDecorate2 string66
+AhnDecorate3 string66
+AhnDecorate4 string66
+AhnDecorate5 string66
+AhnDecorate6 string66
+AhnDecorate7 string66
+AmiiboDesign2 string95
+JokeRose f32
+EmoticonsMenu s32
+Regionlibrary s32
+Remote_Vibration u32
+PayBell s32
+Stage_Success s16
+GripSimple f32
+Folded_Season u32
+Tango1_Knot s16
+Tango2_Knot s16
+Tango3_Knot s16
+Tango4_Knot s16
+Tango5_Knot s16
+LTAEye20
+LUAEye20
+LQAEye20
+LRAEye20
+XUVCover
+XUVHover

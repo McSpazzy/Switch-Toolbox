@@ -100,7 +100,8 @@ namespace FirstPlugin
                             value = reader.ReadInt32();
 
                             var checkVal = BitConverter.ToUInt32(BitConverter.GetBytes((int)value), 0);
-                            if (Hashes.ContainsKey(checkVal))
+
+                            if (Hashes.ContainsKey(checkVal) && checkVal > 0)
                             {
                                 value = Hashes[checkVal];
                                 type = DataType.String;
