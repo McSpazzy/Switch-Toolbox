@@ -1,4 +1,4 @@
-HA
+﻿HA
 Net
 Bag
 SSAO
@@ -2573,8 +2573,6 @@ m2ndSec.f32
 m2ndCheckDistance.f32
 m1stSec.f32
 m1stCheckDistance.f32
-StampCtrlSeq3939ParamsBuffer[].Str
-StampCtrlSeq11625List[].V4f
 mMoveAreaRangeFromCreatePosParamArray[].u64
 mAirportColor1[].C4f
 mAirportColor0[].C4f
@@ -2835,3 +2833,7 @@ mWindType[].Enum
 0/14.u32
 0/13.u32
 0/12.u32
+GMO調整
+C_RightUp
+mIsDrum.bool
+mIsInside.bool

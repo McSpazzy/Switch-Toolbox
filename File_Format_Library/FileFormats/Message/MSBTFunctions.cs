@@ -17,14 +17,34 @@ namespace FirstPlugin.FileFormats.Message
             {0x5A, "GetNumber"}
         };
 
-        public static Dictionary<short, string> StringName = new Dictionary<short, string>()
+        public static Dictionary<short, string> PlayerStringName = new Dictionary<short, string>()
         {
-            {1, "Name"},
+            {0, "..."},
+            {1, "PlayerName"},
+            {3, "Nickname"},
+            {5, "Catchphrase"},
+            {8, "OtherIsland"},
             {9, "Island"}
         };
 
+        public static Dictionary<short, string> NumberName = new Dictionary<short, string>()
+        {
+            {2, "Units"},
+            {17, "Bells"},
+            {20, "TurnipBuyPrice"},
+            {21, "OfferPrice"},
+            {26, "BuyPrice"},
+            {34, "RelativeYear"},
+            {35, "RelativeMonth"},
+            {36, "RelativeDay"},
+            {37, "RelativeHour"},
+            {38, "RelativeMinute"},
+            {0x69, "HHAPoints"}
+        };
+
         public static string FunctionName(byte index) => Function.ContainsKey(index) ? Function[index] : "Unknown";
-        public static string GetStringName(short index) => StringName.ContainsKey(index) ? StringName[index] : "Unknown";
+        public static string GetPlayerStringName(short index) => PlayerStringName.ContainsKey(index) ? PlayerStringName[index] : "Unknown";
+        public static string GetNumberName(short index) => NumberName.ContainsKey(index) ? NumberName[index] : "Unknown";
 
         static MSBTFunctions()
         {
@@ -58,12 +78,14 @@ namespace FirstPlugin.FileFormats.Message
             var val2 = BitConverter.ToInt16(data, 6);
             switch (data[2])
             {
-                case 0x5A: // GetNumber
-                    return new Tuple<string, int>($"GetNumber({val1}, {val2})", 10);
-                case 0x6E: // GetString
-                    return new Tuple<string, int>($"GetString({GetStringName(val1)})", 8);
-                case 0x32: // GetArticle
-                    return new Tuple<string, int>($"GetArticle({data[8]}, {data[9]}, {data[10]})", 12);
+                case 0x5A: // Assorted values
+                    return new Tuple<string, int>($"Value({GetNumberName(val1)}, {val2})", 10);
+                case 0x6E: // Player info
+                    return new Tuple<string, int>($"String({GetPlayerStringName(val1)})", 8);
+                case 0x32: // Language article based on STR_Article
+                    return new Tuple<string, int>($"Article({data[8]}, {data[9]}, {data[10]})", 12);
+                case 0x73: // Other player info
+                    return new Tuple<string, int>($"String({data[8]}, {data[9]}, {data[10]})", 12);
                 default:
                     break;
             }
