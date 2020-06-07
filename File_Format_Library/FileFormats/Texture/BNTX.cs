@@ -278,7 +278,7 @@ namespace FirstPlugin
                 }
 
                 FileFormat.Unload();
-                GC.Collect();
+                // GC.Collect();
             }
         }
 
@@ -671,7 +671,7 @@ namespace FirstPlugin
                 textures.AddRange(ImportTexture(settings, importer.CompressionMode));
             }
             settings.Clear();
-            GC.Collect();
+          //  GC.Collect();
             Cursor.Current = Cursors.Default;
 
             return textures;
@@ -697,7 +697,7 @@ namespace FirstPlugin
                 ImportTexture(settings, importer.CompressionMode);
             }
             settings.Clear();
-            GC.Collect();
+         //   GC.Collect();
             Cursor.Current = Cursors.Default;
         }
 
@@ -910,7 +910,7 @@ namespace FirstPlugin
 
                 UpdateEditor();
 
-                GC.Collect();
+              //  GC.Collect();
             }
         }
 

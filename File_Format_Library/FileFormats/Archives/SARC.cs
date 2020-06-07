@@ -233,7 +233,7 @@ namespace FirstPlugin
             if (PluginRuntime.SarcArchives.Contains(this))
                 PluginRuntime.SarcArchives.Remove(this);
 
-            GC.SuppressFinalize(this);
+           // GC.SuppressFinalize(this);
         }
 
         static uint NameHash(string name)

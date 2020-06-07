@@ -63,11 +63,20 @@ namespace Toolbox.Library
         }
         public static ObjectEditor GetObjectEditor()
         {
-            if (Runtime.MainForm.ActiveMdiChild is ObjectEditor)
+            ObjectEditor item = null;
+            if (Runtime.MainForm.InvokeRequired)
             {
-                return (ObjectEditor)Runtime.MainForm.ActiveMdiChild;
+                item = (ObjectEditor)Runtime.MainForm.Invoke(new Action(() => GetObjectEditor()));
             }
-            return null;
+            else
+            {
+                if (Runtime.MainForm.ActiveMdiChild is ObjectEditor)
+                {
+                    item = (ObjectEditor)Runtime.MainForm.ActiveMdiChild;
+                }
+            }
+
+            return item;
         }
         public static void LoadViewportEditor(Control control)
         {

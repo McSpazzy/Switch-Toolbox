@@ -807,10 +807,11 @@ namespace FirstPlugin
        
             BFRESRender = new BFRESRender();
             if (!Runtime.MainForm.InvokeRequired)
+            {
                 DrawableContainer.Name = FileName;
-
-            BFRESRender.ModelTransform = MarioCostumeEditor.SetTransform(FileName);
-            BFRESRender.ResFileNode = this;
+                BFRESRender.ModelTransform = MarioCostumeEditor.SetTransform(FileName);
+                BFRESRender.ResFileNode = this;
+            }
 
             if (IsWiiU)
             {
@@ -885,6 +886,13 @@ namespace FirstPlugin
                 resFileU.ShapeAnims.Clear();
                 resFileU.SceneAnims.Clear();
                 resFileU.ExternalFiles.Clear();
+            }
+
+            if (BFRESRender.ResFileNode?.Nodes == null)
+            {
+                Nodes.Clear();
+            //    GC.SuppressFinalize(this);
+                return;
             }
 
             foreach (var node in TreeViewExtensions.Collect(BFRESRender.ResFileNode.Nodes))

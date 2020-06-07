@@ -143,7 +143,7 @@ namespace Toolbox.Library
                                     bitmap.Save($"{TexturePath}/{textureName}.png");
                                     bitmap.Dispose();
 
-                                    GC.Collect();
+                                   // GC.Collect();
                                 }
                             }
                             catch (Exception ex) {

@@ -253,7 +253,7 @@ namespace Bfres.Structs
 
                             settings.Clear();
 
-                            GC.Collect();
+                            // GC.Collect();
                             Cursor.Current = Cursors.Default;
                         }
                     }
@@ -782,7 +782,7 @@ namespace Bfres.Structs
 
                     settings.Clear();
 
-                    GC.Collect();
+                  //  GC.Collect();
                     Cursor.Current = Cursors.Default;
                 }
             }
@@ -845,7 +845,7 @@ namespace Bfres.Structs
             }
 
             settings.Clear();
-            GC.Collect();
+            //GC.Collect();
             Cursor.Current = Cursors.Default;
         }
 

@@ -428,7 +428,7 @@ namespace Toolbox.Library
 
             STFileSaver.SaveFileFormat(FileFormat, FileName);
 
-            GC.Collect();
+            // GC.Collect();
         }
 
         private void ExtractAllAction(object sender, EventArgs args)
@@ -480,7 +480,7 @@ namespace Toolbox.Library
                 progressBar.Dispose();
                 ProccessedFiles.Clear();
 
-                GC.Collect();
+              //  GC.Collect();
 
                 FillTreeNodes();
             }

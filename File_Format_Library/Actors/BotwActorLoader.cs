@@ -288,7 +288,7 @@ namespace UKing.Actors
             }
 
             Categories.Clear();
-            GC.Collect();
+            // GC.Collect();
         }
 
         private bool NotifySetGamePath()

@@ -1412,18 +1412,25 @@ namespace Toolbox
                     progressBar.Value = index * (100 / files.Length);
                     progressBar.Task = $"Exporting Model...{index}/{files.Length} | {Path.GetFileNameWithoutExtension(file)}";
                     progressBar.Refresh();
-                   
-                    IFileFormat fileFormat = null;
-                    try
+                    
+                    await Task.Run(async () =>
                     {
-                        fileFormat = STFileLoader.OpenFileFormat(file);
-                    }
-                    catch (Exception ex)
-                    {
-                        failedFiles.Add($"{file} \n Error:\n {ex} \n");
-                    }
+                        IFileFormat fileFormat = null;
+                        try
+                        {
+                            fileFormat = STFileLoader.OpenFileFormat(file);
+                        }
+                        catch (Exception ex)
+                        {
+                            failedFiles.Add($"{file} \n Error:\n {ex} \n");
+                        }
 
-                    await Task.Run(async () => { await SearchFileFormat(form.BatchSettings, fileFormat, extension, outputFolder, ExportMode.Models, true); });
+                        await SearchFileFormat(form.BatchSettings, fileFormat, extension, outputFolder, ExportMode.Models, true);
+
+                        fileFormat?.Unload();
+                    });
+
+                    GC.Collect();
                 }
 
                 batchExportFileList.Clear();
@@ -1538,7 +1545,17 @@ namespace Toolbox
                 path = Utils.RenameDuplicateString(batchExportFileList, path, 0, 3);
                 batchExportFileList.Add(path);
 
-                await Task.Run(() => { DAE.Export($"{path}.{extension}", daesettings, model, textures, skeleton); });
+                try
+                {
+                    DAE.Export($"{path}.{extension}", daesettings, model, textures, skeleton);
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+                model.Unload();
+                fileFormat.Unload();
             }
 
             fileFormat.Unload();
@@ -1590,7 +1607,7 @@ namespace Toolbox
                 var folderDlg = new FolderBrowserDialog();
                 if (folderDlg.ShowDialog() == DialogResult.OK)
                 {
-                    var filenames = Directory.GetFiles(ofd.SelectedPath);
+                    var filenames = Directory.GetFiles(ofd.SelectedPath, "*.*", SearchOption.AllDirectories);
                     BatchExportModels(filenames, folderDlg.SelectedPath);
                 }
             }
