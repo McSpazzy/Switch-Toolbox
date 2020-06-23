@@ -26,6 +26,9 @@ namespace FirstPlugin
         }
 
         static Dictionary<uint, string> hashes = new Dictionary<uint, string>();
+        static Dictionary<uint, string> mmhashes = new Dictionary<uint, string>();
+
+
         public static Dictionary<uint, string> Hashes
         {
             get
@@ -104,6 +107,13 @@ namespace FirstPlugin
                             if (Hashes.ContainsKey(checkVal) && checkVal > 0)
                             {
                                 value = Hashes[checkVal];
+                                type = DataType.String;
+                                break;
+                            }
+
+                            if (mmhashes.ContainsKey(checkVal) && checkVal > 0)
+                            {
+                                value = mmhashes[checkVal];
                                 type = DataType.String;
                                 break;
                             }
@@ -211,6 +221,10 @@ namespace FirstPlugin
             uint hash = Crc32.Compute(hashStr);
             if (!hashes.ContainsKey(hash))
                 hashes.Add(hash, hashStr);
+
+            uint mmhash = MurMurHash3.Hash(hashStr);
+            if (!mmhashes.ContainsKey(mmhash))
+                mmhashes.Add(mmhash, hashStr);
         }
     }
 }
