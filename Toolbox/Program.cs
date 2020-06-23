@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Globalization;
+using System.Threading;
 using System.Runtime.InteropServices;
 using System.Reflection;
 using Microsoft.VisualBasic.ApplicationServices;
