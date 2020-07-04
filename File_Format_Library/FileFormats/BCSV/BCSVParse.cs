@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Toolbox.Library;
 using Toolbox.Library.IO;
@@ -27,6 +29,7 @@ namespace FirstPlugin
 
         static Dictionary<uint, string> hashes = new Dictionary<uint, string>();
         static Dictionary<uint, string> mmhashes = new Dictionary<uint, string>();
+        static Dictionary<uint, string> overridehashes = new Dictionary<uint, string>();
 
 
         public static Dictionary<uint, string> Hashes
@@ -40,6 +43,16 @@ namespace FirstPlugin
         }
 
         public List<DataEntry> Entries = new List<DataEntry>();
+
+        private static bool OnlyHexInString(string test)
+        {
+            if (test.Length < 5)
+            {
+                return false;
+            }
+            // For C-style hex notation (0xFF) you can use @"\A\b(0[xX])?[0-9a-fA-F]+\b\Z"
+            return Regex.IsMatch(test, @"\A\b[0-9a-fA-F]+\b\Z");
+        }
 
         public void Read(FileReader reader)
         {
@@ -134,12 +147,50 @@ namespace FirstPlugin
                             break;
                         case DataType.String:
                             value = reader.ReadZeroTerminatedString(Encoding.UTF8);
+
+                            if (!OnlyHexInString(value.ToString()) && !value.ToString().Contains("|"))
+                            {
+                                break;
+                            }
+
+                            var result = "";
+
+                            var spl = value.ToString().Split('|');
+
+                            foreach (var s in spl)
+                            {
+                                if (!OnlyHexInString(s))
+                                {
+                                    result += s + "|";
+                                    continue;
+                                }
+
+                                var sHash = Convert.ToUInt32(s.ToString(), 16);
+
+                                if (Hashes.ContainsKey(sHash) && sHash > 0)
+                                {
+                                    result += Hashes[sHash] + "|";
+                                    continue;
+                                }
+
+                                if (mmhashes.ContainsKey(sHash) && sHash > 0)
+                                {
+                                    result += mmhashes[sHash] + "|";
+                                    continue;
+                                }
+                            }
+
+                            value = result.TrimEnd('|');
                             break;
                     }
 
                     if (Hashes.ContainsKey(fields[f].Hash))
                     {
                         name = Hashes[fields[f].Hash].Split(' ')[0];
+                    } 
+                    else if (overridehashes.ContainsKey(fields[f].Hash))
+                    {
+                        name = overridehashes[fields[f].Hash];
                     }
                     else
                     {
@@ -200,7 +251,7 @@ namespace FirstPlugin
 
         private static void CalculateHashes()
         {
-            string dir = Path.Combine(Runtime.ExecutableDir, "Hashes");
+            string dir = Path.Combine(Runtime.ExecutableDir ?? AppDomain.CurrentDomain.BaseDirectory, "Hashes");
             if (!Directory.Exists(dir))
                 return;
 
@@ -212,6 +263,21 @@ namespace FirstPlugin
                 foreach (string hashStr in File.ReadAllLines(file))
                 {
                     CheckHash(hashStr);
+                }
+            }
+
+            foreach (var file in Directory.GetFiles(dir))
+            {
+                if (Utils.GetExtension(file) != ".ovr")
+                    continue;
+
+                foreach (var hashStr in File.ReadAllLines(file))
+                {
+                    var item = hashStr.Split(':');
+                    var ind = Convert.ToUInt32(item[0], 16);
+
+                    if (!overridehashes.ContainsKey(ind))
+                        overridehashes.Add(ind, item[1]);
                 }
             }
         }
