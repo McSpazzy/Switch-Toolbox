@@ -56,6 +56,7 @@ namespace FirstPlugin
 
         public void Read(FileReader reader)
         {
+            var headers = new List<string>();
             uint numEntries = reader.ReadUInt32();
             uint entrySize = reader.ReadUInt32();
             ushort numFields = reader.ReadUInt16();
@@ -101,6 +102,25 @@ namespace FirstPlugin
                     reader.SeekBegin(pos + fields[f].Offset);
                     object value = 0;
                     string name = fields[f].Hash.ToString("x");
+
+                    var hashtype = "";
+
+                    if (Hashes.ContainsKey(fields[f].Hash))
+                    {
+                        name = Hashes[fields[f].Hash].Split(' ')[0];
+                        hashtype = Hashes[fields[f].Hash];
+                    }
+                    else if (overridehashes.ContainsKey(fields[f].Hash))
+                    {
+                        headers.Add(fields[f].Hash.ToString("x"));
+              
+                        name = overridehashes[fields[f].Hash];
+                    }
+                    else
+                    {
+                        headers.Add(fields[f].Hash.ToString("x"));
+                    }
+
                     switch (type)
                     {
                         case DataType.Byte:
@@ -127,6 +147,13 @@ namespace FirstPlugin
                             if (mmhashes.ContainsKey(checkVal) && checkVal > 0)
                             {
                                 value = mmhashes[checkVal];
+                                type = DataType.String;
+                                break;
+                            }
+
+                            if ((name.Contains(".hshCstringRef") || name.Contains(".HashRef") || hashtype.Contains("string")) && checkVal != 0 || name.Contains(".HashRef"))
+                            {
+                                value = checkVal.ToString("X");
                                 type = DataType.String;
                                 break;
                             }
@@ -224,10 +251,14 @@ namespace FirstPlugin
                             }
                         }
                     }
-                    entry.Fields.Add(name, value);
+
+                    entry.Fields.Add(name.Replace(".hshCstringRef", ""), value);
                 }
                 reader.SeekBegin(pos + entrySize);
             }
+
+        //    File.AppendAllLines(@"s:\Bcsvheaderunknown.txt", headers);
+
         }
 
         private bool IsFloatValue(int value) {
@@ -273,6 +304,11 @@ namespace FirstPlugin
 
                 foreach (var hashStr in File.ReadAllLines(file))
                 {
+                    if (string.IsNullOrEmpty(hashStr))
+                    {
+                        continue;
+                    }
+
                     var item = hashStr.Split(':');
                     var ind = Convert.ToUInt32(item[0], 16);
 

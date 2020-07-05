@@ -131,7 +131,7 @@ Color2 u8
 ToolAsCommand string30
 EventObjUniqueID u16
 EventObjUniqueID u16
-GetScale f32 # I think?
+GetScale f32
 PeakRotateOffsetX f32
 SeasonSummerLevel u8
 StartMoS4 u8
@@ -244,7 +244,7 @@ LeftTransOffsetX f32
 HasEigyoLight u8
 LabelLong string64
 ReBodyPattern5Color1 u8
-InitLive u8 # dunno
+InitLive u8
 Key string64
 Frames u16
 Value u16
@@ -382,7 +382,7 @@ Price s32
 BromideItemID s16
 ResourceNameSp5 string33
 MysteryTourFieldUniqueID u16
-FlagAnim u16 # possibly?
+FlagAnim u16
 EventEnd s8
 TouchRumble u8
 TopRotateOffsetZ f32
@@ -1021,3 +1021,178 @@ CaptureFtrIcon u8
 Weighting u8
 IsCollectAchievement u8
 Stage11 string32
+
+ItemUnitIcon.hshCstringRef
+FishMuseumAction.hshCstringRef
+HouseDoorShape.hshCstringRef
+N0Parts.hshCstringRef
+LowerSetting.hshCstringRef
+MeshEdgeDirType.hshCstringRef
+TemplateKind.hshCstringRef
+MessageKind.hshCstringRef
+OutfitSE.hshCstringRef
+InsectParam.hshCstringRef
+EdgePatternType.hshCstringRef
+ItemHHAPart.hshCstringRef
+S2Parts.hshCstringRef
+NpcLooks.hshCstringRef
+AppearType.hshCstringRef
+ItemHHASeason.hshCstringRef
+Seasonality.hshCstringRef
+VmPauseType.hshCstringRef
+Theme.hshCstringRef
+ItemHHASet.hshCstringRef
+SEParts.hshCstringRef
+EventFtrSwitch.hshCstringRef
+Sound.hshCstringRef
+AppearanceLevel.hshCstringRef
+E1Parts.hshCstringRef
+W2Parts.hshCstringRef
+MannequinPose.hshCstringRef
+SLinkType.hshCstringRef
+SWParts.hshCstringRef
+DragSE.hshCstringRef
+TourType.hshCstringRef
+ItemMenu.hshCstringRef
+AudioPreset.hshCstringRef
+TriangleType.hshCstringRef
+E0Parts.hshCstringRef
+CraftUnlock.hshCstringRef
+BgCheckType.hshCstringRef
+ItemMessageCategory.hshCstringRef
+W3Parts.hshCstringRef
+ItemReFabricType.hshCstringRef
+Scale.hshCstringRef
+FallActionType.hshCstringRef
+PlacementKind.hshCstringRef
+N4Parts.hshCstringRef
+HouseDoorStep.hshCstringRef
+ItemUICategory.hshCstringRef
+NpcOutfit.hshCstringRef
+SuccessResult.hshCstringRef
+BridgePattern.hshCstringRef
+PhotoStudioRoomNo.hshCstringRef
+ItemPriorityPlace.hshCstringRef
+BuoyLv.hshCstringRef
+PartsKind.hshCstringRef
+AppearArea.hshCstringRef
+FactoryType.hshCstringRef
+ItemUIFurnitureCategory.hshCstringRef
+Category.hshCstringRef
+RegionEventCountry1.hshCstringRef
+RemoteChase.hshCstringRef
+InstrumentsType.hshCstringRef
+S3Parts.hshCstringRef
+NpcGender.hshCstringRef
+ItemOutfitInfo.hshCstringRef
+LifeSupportStamp.hshCstringRef
+ItemKind.hshCstringRef
+Light.hshCstringRef
+ClothGroup.hshCstringRef
+ItemHobbyType.hshCstringRef
+GenderUsEu.hshCstringRef
+S1Parts.hshCstringRef
+WindDirection.hshCstringRef
+NpcFtrActionWeather.hshCstringRef
+ItemDailyCategory.hshCstringRef
+ItemRemakeType.hshCstringRef
+RoomType.hshCstringRef
+ItemLightColor.hshCstringRef
+AO.hshCstringRef
+Effect.hshCstringRef
+LocalWindType.hshCstringRef
+W1Parts.hshCstringRef
+N1Parts.hshCstringRef
+ActionRange.hshCstringRef
+Kind.hshCstringRef
+Color1.hshCstringRef
+E2Parts.hshCstringRef
+ItemHHASituation1.hshCstringRef
+SearchRadius.hshCstringRef
+EventType.hshCstringRef
+ItemLayout.hshCstringRef
+ItemMailAttachCategory.hshCstringRef
+CaptureLevel.hshCstringRef
+ItemNpcReactionGenreType.hshCstringRef
+CraftRecipeSeason.hshCstringRef
+HouseDoorAnim.hshCstringRef
+StageName.hshCstringRef
+N3Parts.hshCstringRef
+SeaType.hshCstringRef
+StepLevel.hshCstringRef
+CornerType.hshCstringRef
+AITagCategory.hshCstringRef
+ShopType.hshCstringRef
+RoomWindowModelType.hshCstringRef
+N2Parts.hshCstringRef
+Hobby.hshCstringRef
+HouseColor.hshCstringRef
+ItemNpcRoomLayoutLimit.hshCstringRef
+RoomWindowWallType.hshCstringRef
+TVProgramName.hshCstringRef
+Dir.hshCstringRef
+Social.hshCstringRef
+ItemPlayerTopsBottomsForm.hshCstringRef
+S4Parts.hshCstringRef
+ItemNpcFtrActionType.hshCstringRef
+ItemKindUIType.hshCstringRef
+CategoryName.hshCstringRef
+ModelType.hshCstringRef
+NpcFtrActionInterest.hshCstringRef
+ShadowType.hshCstringRef
+AppearWeather.hshCstringRef
+StructureInfoHouseType.hshCstringRef
+ItemHHATheme.hshCstringRef
+ChangeDemo.hshCstringRef
+ReefType.hshCstringRef
+NPCUnlock.hshCstringRef
+LampType.hshCstringRef
+ItemSize.hshCstringRef
+MysteryTourFieldOutside.hshCstringRef
+StructureInfoType.hshCstringRef
+EventFtrDirection.hshCstringRef
+FossilSet.hshCstringRef
+WallPlaceType.hshCstringRef
+NWParts.hshCstringRef
+ItemNpcFtrWatchType.hshCstringRef
+AsName.hshCstringRef
+ObjCheckType.hshCstringRef
+ItemRegionFilter.hshCstringRef
+ItemHHASituation2.hshCstringRef
+PlaneChangeType.hshCstringRef
+ItemNpcRoomReplaceCategory.hshCstringRef
+Act.hshCstringRef
+Color2.hshCstringRef
+ItemGender.hshCstringRef
+InnerType000.hshCstringRef
+ItemShopSeasonality.hshCstringRef
+ItemCatalogType.hshCstringRef
+PacketType.hshCstringRef
+W0Parts.hshCstringRef
+ItemFrom.hshCstringRef
+NEParts.hshCstringRef
+VmRhythmType.hshCstringRef
+ActionType.hshCstringRef
+Layer.hshCstringRef
+ItemPlacementKind.hshCstringRef
+Timezone.hshCstringRef
+E3Parts.hshCstringRef
+FacilityModelVariation.hshCstringRef
+ItemNpcReactionThemeType.hshCstringRef
+GenderAsia.hshCstringRef
+S0Parts.hshCstringRef
+ItemAct.hshCstringRef
+ItemHHACategory.hshCstringRef
+ToolState.hshCstringRef
+NpcMsgBullfestCondition.hshCstringRef
+CaptureCategory.hshCstringRef
+
+InWaterBody u8
+
+NormalScaleBottomsA f32
+NormalScaleBottomsB f32
+NormalScaleBottomsG f32
+NormalScaleBottomsR f32
+
+EventEnd u8
+CaptureGardeningIcon u8

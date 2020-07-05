@@ -42,7 +42,7 @@ ProbSeptemberNight u16
 ProbFebruayEvening1 u16
 NormalScaleMaskA f32
 ProbJanuaryNight u16
-ArriveDist f32 # maybe might be a collision
+ArriveDist f32
 ProbJanNight u16
 ProbNovemberEvening1 u16
 ProbJanuaryMidnight u16
@@ -84,7 +84,7 @@ ProbJulyEvening1 u16
 FossilObjNum u16
 ProbFebruayEvening2 u16
 ProbAugMorningAndEvening u16
-BuoyLv.hshCstringRef # I think...
+BuoyLv.hshCstringRef
 ProbMarNight u16
 ProbJulyMorning u16
 ProbAprilMidnight u16
@@ -173,7 +173,7 @@ ProbOctoberEvening2 u16
 ProbDecemberEvening1 u16
 ProbMarDaytime u16
 ProbMarchEvening2 u16
-JudgeVisibleOn u8 # check me really
+JudgeVisibleOn u8
 ProbNovemberMorning u16
 TimeZoneOutdoorEveningLevel u8
 VmPauseType u8
@@ -199,3 +199,10 @@ InitLive u8
 ArriveDist f32
 GetScale f32
 JudgeVisibleOn u8
+ModelScale f32
+AITagBitRankS u8
+AITagBitRankC u8
+DemoType u8
+AITagBitRankA u8
+AITagBitRankB u8
+OnepieceLNormalScaleMaskB f32

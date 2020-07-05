@@ -67,7 +67,7 @@ namespace FirstPlugin
 
         private static void CreateHashList()
         {
-            string dir = Path.Combine(Runtime.ExecutableDir, "Hashes");
+            string dir = Path.Combine(Runtime.ExecutableDir ?? AppDomain.CurrentDomain.BaseDirectory, "Hashes");
             if (!Directory.Exists(dir))
                 return;
 
