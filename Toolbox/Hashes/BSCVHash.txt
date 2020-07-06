@@ -130,7 +130,6 @@ Day2038 u8
 Color2 u8
 ToolAsCommand string30
 EventObjUniqueID u16
-EventObjUniqueID u16
 GetScale f32
 PeakRotateOffsetX f32
 SeasonSummerLevel u8
@@ -568,7 +567,6 @@ ItemKind12 u16
 ExchangeItem u16
 InnerType032 u8
 DemoNetLockState u8
-DemoNetLockState u8
 ReBodyPattern6Color1 u8
 USen u8
 Day2015 u8
@@ -579,7 +577,6 @@ StampRackItemNameA u16
 ReBodyPatternNum s8
 StartMoN4 u8
 AnimeTypeSitDown string64
-GroupIndex s8
 GroupIndex s8
 StatusPattern u8
 CameraParamName string33
@@ -846,7 +843,6 @@ RegionAsia u8
 RegionJp u8
 Month2017 u8
 CheckDonation u8
-Name u16
 Movie0 u32
 Movie1 u32
 Movie2 u32
@@ -878,11 +874,7 @@ Comic0 u32
 Comic1 u32
 Comic2 u32
 GenreID u16
-UniqueID u32
 SortID s32
-Name string60
-Name string64
-Name string128
 Stage0 string32
 Stage1 string32
 Stage2 string32
@@ -894,20 +886,11 @@ Stage7 string32
 Stage8 string32
 Stage9 string32
 Stage10 string32
-Label string8
-Label string30
-Label string50
-Label string64
-MaxValue u8
-MaxValue u32
 Door0Angle f32
 Bush_N u8
 Bush_S u8
 Shop_N u8
 Shop_S u8
-SelectRate f32
-DefaultValue u8
-DefaultValue u32
 PurposeTag u32
 PurposeScore s32
 Snow_S u8
@@ -1062,7 +1045,6 @@ ProbSeptemberNight u16
 ProbFebruayEvening1 u16
 NormalScaleMaskA f32
 ProbJanuaryNight u16
-ArriveDist f32
 ProbJanNight u16
 ProbNovemberEvening1 u16
 ProbJanuaryMidnight u16
@@ -1213,18 +1195,12 @@ ProbAugustDaytime u16
 TimeZoneOutdoorEarlyMorningLevel u8
 OnepieceLNormalScaleMaskB f32
 ProbDecemberMidnight u16
-FlagAnim u16
-InitLive u8
-ArriveDist f32
-GetScale f32
-JudgeVisibleOn u8
 ModelScale f32
 AITagBitRankS u8
 AITagBitRankC u8
 DemoType u8
 AITagBitRankA u8
 AITagBitRankB u8
-OnepieceLNormalScaleMaskB f32
 ItemUnitIcon.hshCstringRef
 FishMuseumAction.hshCstringRef
 HouseDoorShape.hshCstringRef
@@ -1276,7 +1252,6 @@ SuccessResult.hshCstringRef
 BridgePattern.hshCstringRef
 PhotoStudioRoomNo.hshCstringRef
 ItemPriorityPlace.hshCstringRef
-BuoyLv.hshCstringRef
 PartsKind.hshCstringRef
 AppearArea.hshCstringRef
 FactoryType.hshCstringRef
