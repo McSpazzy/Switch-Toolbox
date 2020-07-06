@@ -392,9 +392,6 @@
     <Content Include="Hashes\BSCVHash.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Hashes\BSCVHashNin.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Hashes\BSCVVals.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
