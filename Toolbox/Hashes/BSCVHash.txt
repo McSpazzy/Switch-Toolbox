@@ -1394,3 +1394,54 @@ BO2Index s16
 KO2Index s16
 OT2Index s16
 ZK2Index s16
+SwitchableOnWall u8
+NpcFtrWatchPos f32
+ItemRandomColorGroup.hshCstringRef
+StampRackNameExplainLabel string32
+ItemOrderSale.hshCstringRef
+RefSoundAttributeID u16
+RefabricPattern0LightColor u32
+RefabricPattern1LightColor u32
+RefabricPattern2LightColor u32
+RefabricPattern3LightColor u32
+RefabricPattern4LightColor u32
+RefabricPattern5LightColor u32
+RefabricPattern6LightColor u32
+RefabricPattern7LightColor u32
+RebodyPattern0LightColor.hshCstringRef
+RebodyPattern1LightColor u32
+RebodyPattern2LightColor u32
+RebodyPattern3LightColor u32
+RebodyPattern4LightColor u32
+RebodyPattern5LightColor u32
+RebodyPattern6LightColor u32
+RebodyPattern7LightColor u32
+HousePartsType.hshCstringRef
+PicIconHeight f32
+OpenAchievementCount u16
+DummyMenuDemo u8
+CapPurposeLimit u8
+EnableRodCloth u8
+ResSizeLimit f32
+CanHasSit u8
+ActionLockRange u8
+RemakeLotType.hshCstringRef
+MaskPurposeLimit u8
+ChangeFallType.hshCstringRef
+TalkValueVillager u16
+HousePartsType u16
+TalkValueVisitor u16
+ValidDiveRate u8
+RegionEventCountry2 u16
+RegionEventCountry3 u16
+RegionEventCountry4 u16
+RegionEventCountry5 u16
+ColorGroupSortId u16
+InterestEndModeType u8
+ResNameReplaceField string32
+ResNameReplaceMuseum string32
+UseColorGroupSort u8
+StampRackSetDirection s16
+FtrIconCaptureType.hshCstringRef
+CraftRecipeSelectSeasonType.hshCstringRef
+DebugFtrSeries.hshCstringRef
