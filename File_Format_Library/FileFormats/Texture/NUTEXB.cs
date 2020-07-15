@@ -11,6 +11,7 @@ using Toolbox.Library.Forms;
 using System.ComponentModel;
 using Syroot.NintenTools.NSW.Bntx;
 using Syroot.NintenTools.NSW.Bntx.GFX;
+using System.IO;
 
 namespace FirstPlugin
 {
@@ -264,35 +265,96 @@ namespace FirstPlugin
 
         public override void Replace(string FileName)
         {
-            var bntxFile = new BNTX();
-            var tex = new TextureData();
-            tex.Replace(FileName, MipCount, 0, Format);
+            if (IsSwizzled)
+            {
+                var tex = new TextureData();
+                tex.Replace(FileName, MipCount, 0, Format);
 
-            //If it's null, the operation is cancelled
-            if (tex.Texture == null)
-                return;
+                //If it's null, the operation is cancelled
+                if (tex.Texture == null)
+                    return;
 
-            List<byte[]> data = new List<byte[]>();
-            foreach (var array in tex.Texture.TextureData)
-                data.Add(array[0]);
+                List<byte[]> data = new List<byte[]>();
+                foreach (var array in tex.Texture.TextureData)
+                    data.Add(array[0]);
 
-            var output = Utils.CombineByteArray(data.ToArray());
+                var output = CreateBuffer(data);
 
-            Width = tex.Texture.Width;
-            Height = tex.Texture.Height;
-            MipCount = tex.Texture.MipCount;
-           // ArrayCount = tex.Texture.ArrayLength;
-           // Depth = tex.Texture.Depth;
+                Width = tex.Texture.Width;
+                Height = tex.Texture.Height;
+                MipCount = tex.Texture.MipCount;
+                // ArrayCount = tex.Texture.ArrayLength;
+                // Depth = tex.Texture.Depth;
 
-            Format = tex.Format;
-            NutFormat = ConvertGenericToNutFormat(tex.Format);
+                Format = tex.Format;
+                NutFormat = ConvertGenericToNutFormat(tex.Format);
 
-            mipSizes = TegraX1Swizzle.GenerateMipSizes(tex.Format, tex.Width, tex.Height, tex.Depth, tex.ArrayCount, tex.MipCount, (uint)ImageData.Length);
+                mipSizes = TegraX1Swizzle.GenerateMipSizes(tex.Format, tex.Width, tex.Height, tex.Depth, tex.ArrayCount, tex.MipCount, (uint)ImageData.Length);
 
-            ImageData = SetImageData(output);
+                ImageData = SetImageData(output);
 
-            data.Clear();
+                data.Clear();
+            }
+            else
+            {
+                GenericTextureImporterList importer = new GenericTextureImporterList(SupportedFormats);
+                GenericTextureImporterSettings settings = new GenericTextureImporterSettings();
+
+                if (Utils.GetExtension(FileName) == ".dds" ||
+                    Utils.GetExtension(FileName) == ".dds2")
+                {
+                    settings.LoadDDS(FileName);
+                    importer.LoadSettings(new List<GenericTextureImporterSettings>() { settings, });
+                    ApplySettings(settings);
+                    UpdateEditor();
+                }
+                else
+                {
+                    settings.LoadBitMap(FileName);
+                    importer.LoadSettings(new List<GenericTextureImporterSettings>() { settings, });
+
+                    if (importer.ShowDialog() == DialogResult.OK)
+                    {
+                        if (settings.GenerateMipmaps && !settings.IsFinishedCompressing)
+                        {
+                            settings.DataBlockOutput.Clear();
+                            settings.DataBlockOutput.Add(settings.GenerateMips(importer.CompressionMode, importer.MultiThreading));
+                        }
+
+                        ApplySettings(settings);
+                        UpdateEditor();
+                    }
+                }
+            }
+
             UpdateEditor();
+        }
+
+        private byte[] CreateBuffer(List<byte[]> imageData)
+        {
+            var mem = new MemoryStream();
+            using (var writer = new FileWriter(mem))
+            {
+                for (int i = 0; i < imageData.Count; i++)
+                {
+                    if (i > 0) writer.Align(Alignment);
+                    writer.Write(imageData[i]);
+                }
+                return mem.ToArray();
+            }
+        }
+
+        private void ApplySettings(GenericTextureImporterSettings settings)
+        {
+            //Combine all arrays
+            this.ImageData = Utils.CombineByteArray(settings.DataBlockOutput.ToArray());
+            this.Width = settings.TexWidth;
+            this.Height = settings.TexHeight;
+            this.Format = settings.Format;
+            this.MipCount = settings.MipCount;
+            this.Depth = settings.Depth;
+            this.ArrayCount = (uint)settings.DataBlockOutput.Count;
+            NutFormat = ConvertGenericToNutFormat(this.Format);
         }
 
         private byte[] SetImageData(byte[] output)
@@ -337,11 +399,6 @@ namespace FirstPlugin
             string StrMagic = reader.ReadString(3);
             TextureName = reader.ReadString(Syroot.BinaryData.BinaryStringFormat.ZeroTerminated);
             Text = TextureName;
-
-            //We cannot check if it's swizzled properly
-            //So far if this part is blank, it's for Taiko No Tatsujin "Drum 'n' Fun
-            if (StrMagic != "XNT")
-                IsSwizzled = false;
 
             reader.Seek(pos - 48, System.IO.SeekOrigin.Begin); //Subtract size of header
             uint padding2 = reader.ReadUInt32();
@@ -428,6 +485,9 @@ namespace FirstPlugin
 
         public void Write(FileWriter writer)
         {
+            TextureName = Text;
+            Console.WriteLine($"Text {Text}");
+
             //MipSizes stores mip sizes for multile arrays
             int arrayCount = mipSizes.Count;
 
@@ -521,7 +581,7 @@ namespace FirstPlugin
         public override byte[] GetImageData(int ArrayLevel = 0, int MipLevel = 0, int DepthLevel = 0)
         {
             if (!IsSwizzled)
-                return DDS.GetArrayFaces(this, ImageData,1)[ArrayLevel].mipmaps[0];
+                return DDS.GetArrayFaces(this, ImageData, 1)[ArrayLevel].mipmaps[0];
 
             return TegraX1Swizzle.GetImageData(this, ImageData, ArrayLevel, MipLevel, DepthLevel, 1);
         }
@@ -545,13 +605,19 @@ namespace FirstPlugin
             useSizeRestrictions.Click += UseSizeRestrictionsAction;
         }
 
-        public ToolStripItem[] GetContextMenuItems()
+        public override ToolStripItem[] GetContextMenuItems()
         {
             List<ToolStripItem> Items = new List<ToolStripItem>();
             Items.Add(useSizeRestrictions);
             Items.Add(new STToolStipMenuItem("Save", null, SaveAction, Keys.Control | Keys.S));
+            Items.Add(new STToolStipMenuItem("Taiko no Tatsujin fix", null, SwizzleToggle, Keys.Control | Keys.S) { Checked = !IsSwizzled, CheckOnClick = true });
             Items.AddRange(base.GetContextMenuItems());
             return Items.ToArray();
+        }
+
+        private void SwizzleToggle(object sender, EventArgs args) {
+            IsSwizzled = ((STToolStipMenuItem)sender).Checked ? false : true;
+            UpdateEditor();
         }
 
         public void Unload()
