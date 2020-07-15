@@ -1445,3 +1445,36 @@ StampRackSetDirection s16
 FtrIconCaptureType.hshCstringRef
 CraftRecipeSelectSeasonType.hshCstringRef
 DebugFtrSeries.hshCstringRef
+StampRackPutUnitX s32
+StampRackPutUnitZ s32
+WalkWatchOffsetX f32
+WalkWatchOffsetY f32
+WalkWatchOffsetZ f32
+ClothesPurposeLimit.hshCstringRef
+ClothesFrequencyWear.hshCstringRef
+TkkSkipBirthday.hshCstringRef
+TkkSkipNormal.hshCstringRef
+PreMsgLabelValue u8
+ClothesTemporarilyCreate.hshCstringRef
+GlassesPurposeLimit u8
+CapTemporarilyCreate u8
+MaskTemporarilyCreate u8
+GlassesTemporarilyCreate u8
+CapFrequencyWear u8
+GlassesFrequencyWear u8
+MaskFrequencyWear u8
+SelectableBeginDate1 u16
+SelectableBeginDate2 u16
+SelectableEndDate1 u16
+SelectableEndDate2 u16
+BalloonTalkLabelKey string4
+ReactionTalkLabelKey string4
+FlagsFlowAccess.hshCstringRef
+FlagsNetAccess.hshCstringRef
+FlagsFlowAccess u8
+FlagsNetAccess u8
+SpotTalkLabelKey string4
+CanPutWallAndFloor u8
+HHABaseScore s16
+OpenRecordNum u16
+Scale10x6.hshCstringRef
