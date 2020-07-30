@@ -1478,3 +1478,14 @@ CanPutWallAndFloor u8
 HHABaseScore s16
 OpenRecordNum u16
 Scale10x6.hshCstringRef
+DisableEmoticon u8
+RemoveEventObj u8
+DemoNetLockState u16
+HandToolAsLabel string32
+FlowEntryName string32
+ToolEnterAsName string32
+ToolSetupAsName string32
+ToolSetupPutawayAsName string32
+IsSelectQuestS u8
+IsSelectQuestSS u8
+IsSelectQuestM u8
