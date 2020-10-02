@@ -27,6 +27,16 @@ namespace FirstPlugin.FileFormats.Message
             {9, "Island"}
         };
 
+        public static Dictionary<short, string> TextModName = new Dictionary<short, string>()
+        {
+            {0, "..."},
+            {1, "PlayerName"},
+            {3, "Nickname"},
+            {5, "Catchphrase"},
+            {8, "OtherIsland"},
+            {9, "Island"}
+        };
+
         public static Dictionary<short, string> NumberName = new Dictionary<short, string>()
         {
             {2, "Units"},
@@ -78,10 +88,12 @@ namespace FirstPlugin.FileFormats.Message
             var val2 = BitConverter.ToInt16(data, 6);
             switch (data[2])
             {
+                case 0x0: // Text modification
+                    return new Tuple<string, int>($"TextMod({val1}, {val2})", 10);
                 case 0x5A: // Assorted values
                     return new Tuple<string, int>($"Value({GetNumberName(val1)}, {val2})", 10);
                 case 0x6E: // Player info
-                    return new Tuple<string, int>($"String({GetPlayerStringName(val1)})", 8);
+                    return new Tuple<string, int>($"String({{{GetPlayerStringName(val1)}}})", 8);
                 case 0x32: // Language article based on STR_Article
                     return new Tuple<string, int>($"Article({data[8]}, {data[9]}, {data[10]})", 12);
                 case 0x73: // Other player info

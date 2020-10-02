@@ -19,6 +19,12 @@ namespace System
         public static T[] SubArrayDeepClone<T>(this T[] data, int index, int length)
         {
             T[] arrCopy = new T[length];
+
+            if (length + index > data.Length)
+            {
+                length = data.Length - index;
+            }
+
             Array.Copy(data, index, arrCopy, 0, length);
             using (MemoryStream ms = new MemoryStream())
             {

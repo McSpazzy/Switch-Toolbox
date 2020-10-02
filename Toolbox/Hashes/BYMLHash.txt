@@ -939,7 +939,6 @@ C_Hat
 C_Small
 SceneParam
 CreatorNpcSpHit
-ReminderByLayer
 Cheekformat
 MultiFilterTrimmingConvert
 cMyDesignExchangeNAME
@@ -2608,7 +2607,7 @@ mCharacterSize.Enum
 mActionType.Enum
 mWeatherType[].Enum
 mWindType[].Enum
-
+ReminderByLayer
 2/9.u32
 2/8.u32
 2/7.u32
@@ -2910,3 +2909,12 @@ mAccele[].f32
 
 IdrDream_DemoParams
 IdrDream_DemoInterporateParams
+
+VignettingParam
+cWeatherPattern_34
+cFacePanel
+MainField_DemoInterporateParams_RVer_10400
+MainField_DemoParams_RVer_10400
+PlayerHouse_DemoInterporateParams_RVer_10400
+PlayerHouse_DemoParams_RVer_10400
+EvtobjTsunekichiStall[]

@@ -1489,3 +1489,20 @@ ToolSetupPutawayAsName string32
 IsSelectQuestS u8
 IsSelectQuestSS u8
 IsSelectQuestM u8
+
+FlagPlayerAnnounce s32
+FacePaint u16
+SkinColor u16
+SkinBushA u8
+DisableInDream u8
+UseCollision u8
+OffsetAccWeed u8
+FallToRiver u8
+CancelFootSE u8
+RadiusBOutdoor u8
+EquipOnlyOutdoor u8
+CaptureDoorOrnamentIcon u8
+IsEquipCeremony u8
+CanChaseForInsect u8
+HideFoodCounter u8
+DoorDecoZOffset f32
