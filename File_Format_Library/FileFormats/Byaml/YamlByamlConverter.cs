@@ -22,6 +22,9 @@ namespace FirstPlugin
         //Used for saving by mapping tags to dynamic values
         private static Dictionary<string, dynamic> ReferenceNodes = new Dictionary<string, dynamic>();
 
+        public static List<string> HashesOut = new List<string>();
+        public static List<string> HashesOut2 = new List<string>();
+
         //id to keep track of reference nodes
         static int refNodeId = 0;
 
@@ -228,7 +231,24 @@ namespace FirstPlugin
                     {
                         uint hash = Convert.ToUInt32(key, 16);
                         if (BYAML.Hashes.ContainsKey(hash))
+                        {
                             key = $"{BYAML.Hashes[hash]}";
+                            if (!key.Contains('.'))
+                            {
+                                if (!HashesOut2.Contains(key))
+                                {
+                                    HashesOut2.Add(key);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            var bssd = hash.ToString("X").PadLeft(8, '0') + ":00000000";
+                            if (!HashesOut.Contains(bssd))
+                            {
+                                HashesOut.Add(bssd);
+                            }
+                        }
 
                         keyNode = new YamlScalarNode(key);
                         keyNode.Tag = "!h";

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
+using System.IO;
 using Toolbox;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 using Toolbox.Library;
 using Toolbox.Library.IO;
 using SharpYaml.Serialization;
@@ -151,6 +153,8 @@ namespace LayoutBXLYT
                     section.SectionSize = SectionSize;
                     reader.SeekBegin(pos + SectionSize);
                 }
+                var test = JsonConvert.SerializeObject(AnimationInfo, Formatting.Indented);
+                File.WriteAllText($"d:\\{bflan.BxlanHeader.FileName}.json", test);
             }
 
             public override void Write(FileWriter writer)

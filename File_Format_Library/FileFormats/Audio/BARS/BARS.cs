@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -8,11 +9,13 @@ using Toolbox.Library;
 using Toolbox.Library.IO;
 using Toolbox.Library.Forms;
 using BarsLib;
+using BarsLib.IO;
 using VGAudio.Formats;
 using VGAudio;
 using VGAudio.Containers.NintendoWare;
 using VGAudio.Containers.Wave;
 using NAudio.Wave;
+using Syroot.BinaryData;
 
 namespace FirstPlugin
 {
@@ -237,45 +240,85 @@ namespace FirstPlugin
 
             Text = FileName;
 
-            bars = new BarsLib.BARS(stream);
+            var backup = new MemoryStream();
+            stream.CopyTo(backup);
 
-            if (bars.HasMetaData)
-                Nodes.Add("Meta Data");
-
-            if (bars.HasAudioFiles)
-                Nodes.Add(new AudioFolder("Audio"));
-
-            for (int i = 0; i < bars.AudioEntries.Count; i++)
+            try
             {
-                var amtaWrapper = new MetaDataNodeWrapper(bars.AudioEntries[i].MetaData);
-                amtaWrapper.ImageKey = "MetaInfo";
-                amtaWrapper.SelectedImageKey = amtaWrapper.ImageKey;
+                stream.Seek(0, SeekOrigin.Begin);
 
-                string audioName = bars.AudioEntries[i].MetaData.Name;
+                bars = new BarsLib.BARS(stream);
 
-                amtaWrapper.Text = $"{audioName}.amta";
-                Nodes[0].Nodes.Add(amtaWrapper);
+                if (bars.HasMetaData)
+                    Nodes.Add("Meta Data");
 
-                if (bars.AudioEntries[i].AudioFile != null)
+                if (bars.HasAudioFiles)
+                    Nodes.Add(new AudioFolder("Audio"));
+
+                for (int i = 0; i < bars.AudioEntries.Count; i++)
                 {
-                    BARSAudioFile audio = bars.AudioEntries[i].AudioFile;
+                    var amtaWrapper = new MetaDataNodeWrapper(bars.AudioEntries[i].MetaData);
+                    amtaWrapper.ImageKey = "MetaInfo";
+                    amtaWrapper.SelectedImageKey = amtaWrapper.ImageKey;
 
-                    AudioEntry node = new AudioEntry();
-                    node.audioFile = audio;
-                    node.Magic = audio.Magic;
-                    node.SetupMusic();
+                    string audioName = bars.AudioEntries[i].MetaData.Name;
 
-                    if (audio.Magic == "FWAV")
-                        node.Text = audioName + ".bfwav";
-                    else if (audio.Magic == "FSTP")
-                        node.Text = audioName + ".bfstp";
-                    else if (audio.Magic == "BWAV")
-                        node.Text = audioName + ".bwav";
-                    else
-                        node.Text = $"{audioName}.{audio.Magic}";
+                    amtaWrapper.Text = $"{audioName}.amta";
+                    Nodes[0].Nodes.Add(amtaWrapper);
 
-                    Nodes[1].Nodes.Add(node);
+                    if (bars.AudioEntries[i].AudioFile != null)
+                    {
+                        BARSAudioFile audio = bars.AudioEntries[i].AudioFile;
+
+                        AudioEntry node = new AudioEntry();
+                        node.audioFile = audio;
+                        node.Magic = audio.Magic;
+                        node.SetupMusic();
+
+                        if (audio.Magic == "FWAV")
+                            node.Text = audioName + ".bfwav";
+                        else if (audio.Magic == "FSTP")
+                            node.Text = audioName + ".bfstp";
+                        else if (audio.Magic == "BWAV")
+                            node.Text = audioName + ".bwav";
+                        else
+                            node.Text = $"{audioName}.{audio.Magic}";
+
+                        Nodes[1].Nodes.Add(node);
+                    }
                 }
+            }
+            catch
+            {
+               
+
+                var header = new BARSHeader();
+
+                header.Read(new FileReader(backup));
+
+                var detrp = "";
+
+                for (int i = 0; i < header.AudioEntries.Count; i++)
+                {
+                    detrp += header.AudioEntries[i].MetaData.Name + "\r\n";
+
+
+
+                }
+                var dirname = $@"D:\\AudioDump\\{FileName.Replace("bars", "")}";
+
+                Directory.CreateDirectory(dirname);
+
+                foreach (var f in header.AudioEntries)
+                {
+                    
+                    File.WriteAllBytes($@"{dirname}\\{f.MetaData.Name.Replace("$", "_")}.bwav", f.AudioFile.data);
+
+                }
+
+                bars = new BarsLib.BARS();
+                bars.AudioEntries = header.AudioEntries;
+
             }
         }
 
@@ -334,5 +377,182 @@ namespace FirstPlugin
                 }
             }
         }
+    }
+
+    public class BARSAMTA
+    {
+        public ushort ByteOrderMark;
+        public ushort Version { get; set; }
+        public uint Length { get; set; }
+        public uint DataOffset { get; set; }
+        public string Name { get; set; }
+
+        public void Read(FileReader reader)
+        {
+            var basePosition = reader.Position;
+
+            reader.ReadSignature(4, "AMTA");
+            ByteOrderMark = reader.ReadUInt16();
+          //  reader.CheckByteOrderMark(ByteOrderMark);
+            Version = reader.ReadUInt16();
+            Length = reader.ReadUInt32();
+            var uk1 = reader.ReadUInt32();
+            int DataOffset = (int)reader.ReadUInt32();
+            int ext = (int)reader.ReadUInt32();
+            uint uk2 = reader.ReadUInt32();
+            uint uk3 = reader.ReadUInt32();
+            uint uk4 = reader.ReadUInt32();
+            uint StartLabel = reader.ReadUInt32();
+
+            reader.SeekBegin(basePosition + 36 + StartLabel);
+
+            Name = reader.ReadZeroTerminatedString();
+
+            reader.SeekBegin(basePosition + Length);
+        }
+    }
+
+    public class BARSHeader
+    {
+        public ushort ByteOrderMark;
+        public int Count;
+        public uint[] Hashes;
+        internal ByteOrder ByteOrder;
+
+        public IList<BarsLib.BARS.AudioEntry> AudioEntries = new List<BarsLib.BARS.AudioEntry>();
+
+        public void Read(FileReader reader)
+        {
+            reader.ByteOrder = ByteOrder.BigEndian;
+
+            reader.ReadSignature(4, "BARS");
+
+            var unknown1 = (int) reader.ReadUInt32();
+
+            ByteOrderMark = reader.ReadUInt16();
+            reader.CheckByteOrderMark(ByteOrderMark);
+
+            var unknown2 = (uint) reader.ReadByte();
+            var unknown3 = (uint) reader.ReadByte();
+
+            Count = reader.ReadInt32();
+            Hashes = reader.ReadUInt32s(Count);
+            ByteOrder = reader.ByteOrder;
+            var position = reader.Position;
+            List<uint> Meta = new List<uint>();
+            List<uint> Offsets = new List<uint>();
+            List<uint> Sizes = new List<uint>();
+
+            for (var index = 0; (long) index < (long) Count; ++index)
+            {
+                var meta = reader.ReadUInt32();
+                Meta.Add(meta);
+
+                uint offset = reader.ReadUInt32();
+                switch (offset)
+                {
+                    case 0:
+                    case uint.MaxValue:
+                        continue;
+                    default:
+                        Console.WriteLine(offset);
+                        Offsets.Add(offset);
+                        continue;
+                }
+            }
+
+            for (int index = 0; index < Offsets.Count; ++index)
+            {
+                if (index < Offsets.Count - 1)
+                    Sizes.Add(Offsets[index + 1] - Offsets[index]);
+                else
+                    Sizes.Add((uint) ((ulong) reader.BaseStream.Length - (ulong) Offsets[index]));
+                Console.WriteLine("AudioSizes " + Sizes[index].ToString());
+            }
+
+            var ao = new BarsLib.BARS.AudioEntry[Count];
+
+            int num5 = 0;
+            reader.Seek(Meta[0], SeekOrigin.Begin);
+            for (var index = 0; index < Count; ++index)
+            {
+                var amta = new BARSAMTA();
+                amta.Read(reader);
+
+                BarsLib.BARS.AudioEntry audioEntry = new BarsLib.BARS.AudioEntry();
+                AMTA amtaold = new AMTA();
+                amtaold.StringTable = new STRG();
+                amtaold.Name = amta.Name;
+                audioEntry.MetaData = amtaold;
+                /*                BARSAudioFile barsAudioFile = new BARSAudioFile();
+
+                                if (barsAudioFile != null)
+                                {
+                                    audioEntry.AudioFile = barsAudioFile;
+                                    audioEntry.AudioFile.SetData(reader, Offsets[num5++]);
+                                }*/
+
+                ao[index] = audioEntry;
+
+            }
+
+            var end = reader.Length;
+
+            reader.Seek(Offsets[0], SeekOrigin.Begin);
+
+            var cacheBits = new Dictionary<uint, byte[]>();
+
+            for (var index = 0; index < Count; ++index)
+            {
+                if (index < Count - 1)
+                {
+                    var adj = index + 1;
+
+                    if (cacheBits.ContainsKey(Offsets[adj]))
+                    {
+                        adj++;
+                    }
+
+                    if (cacheBits.ContainsKey(Offsets[adj]))
+                    {
+                        adj++;
+                    }
+
+                    if (cacheBits.ContainsKey(Offsets[adj]))
+                    {
+                        adj++;
+                    }
+
+                    var ps = Offsets[adj] - Offsets[index];
+                    ao[index].AudioFile = new BARSAudioFile();
+
+                    if (cacheBits.ContainsKey(Offsets[index]))
+                    {
+                        ao[index].AudioFile.data = cacheBits[Offsets[index]];
+                        continue;
+                    }
+
+                    var b = reader.ReadBytes((int)(ps));
+
+
+                    var ss = System.Text.Encoding.UTF8.GetString(b.Take(4).ToArray());
+
+                    ao[index].AudioFile.data = b;
+                    cacheBits.Add(Offsets[index], b);
+                }
+                else
+                {
+                    var b = reader.ReadBytes((int)(end - Offsets[index]));
+                    ao[index].AudioFile = new BARSAudioFile();
+                    ao[index].AudioFile.data = b;
+                }
+
+ 
+            }
+
+            this.AudioEntries = ao.ToList();
+
+        }
+
     }
 }

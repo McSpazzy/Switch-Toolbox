@@ -1492,7 +1492,6 @@ IsSelectQuestM u8
 FlagPlayerAnnounce s32
 FacePaint u16
 SkinColor u16
-SkinBushA s8
 DisableInDream u8
 UseCollision u8
 OffsetAccWeed s8
@@ -1507,3 +1506,51 @@ HideFoodCounter u8
 DoorDecoZOffset f32
 UseRainGoods u8
 CanHide u8
+HarvestFishExchangeIngredients u8
+IsAppearNorth u8
+IsAppearSouth u8
+IsGive u8
+IsWant u8
+Special u8
+Open2020 u8
+Open2021 u8
+WeatherChange u8
+SelectGrowUp u8
+SelectOne u8
+LandFlagKeyOFF string32
+LandFlagKeyON string32
+EventWeatherArea.hshCstringRef
+SortID u16
+ProbHarvestDaytime u16
+ProbHarvestMorningAndEvening u16
+ProbHarvestNight u16
+EmoticonTool.hshCstringRef
+UISortID u16
+SortID s16
+CantTakeOver u8
+MannequinUsage.hshCstringRef
+IsHide1 u8
+IsHide2_1 u8
+IsHide2_2 u8
+IsHide3 u8
+IsHide4 u8
+IsNecessary1_1 u8
+IsNecessary2_1 u8
+IsNecessary2_2 u8
+IsNecessary3_1 u8
+IsNecessary3_2 u8
+IsNecessary4_1 u8
+IsNecessary4_2 u8
+IsVariable u8
+PlayerFlagKeyAfterSelect string32
+PlayerFlagKeyOFF string32
+PlayerFlagKeyON string32
+PlayerFlagKeyON2 string32
+RegionEventItem u8
+
+SelectColor u8
+BcatLevelReady u8
+FlagPlayerAnnounceReady s32
+FlagLandReady s32
+PlacementOfficeType.hshCstringRef
+LandTempFlagKeyOFF string32

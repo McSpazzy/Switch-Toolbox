@@ -406,15 +406,15 @@
     <Content Include="Gl_EditorFramework.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Hashes\ACNHBYML.txt">
+    <None Include="Hashes\ACNHBYML.txt.ah">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Hashes\ACNHHeaders.txt">
+    </None>
+    <None Include="Hashes\ACNHHeaders.txt.mo">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Hashes\ACNHValues.txt">
+    </None>
+    <None Include="Hashes\ACNHValues.txt.no">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
     <Content Include="Lib\aamp_hashed_names.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
