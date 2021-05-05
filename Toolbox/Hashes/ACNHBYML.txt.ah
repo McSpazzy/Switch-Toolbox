@@ -15,6 +15,7 @@ cTalk
 ant00
 Npc01
 Npc00
+mSwimWaitSlowSpeedChaseValue.f32
 Mouth
 SSSSS
 Npc03
@@ -993,7 +994,7 @@ mLightKindParamArray[]
 
 ProbeSetTypeList[]
 mNormAreaSidemRemakeTool
-mStarAmountDeclined
+
 G_Big
 G_Small
 C_LeftUp
@@ -3087,3 +3088,34 @@ cFirstPersonRoomFar
 cFirstPersonRoomNear
 cFirstPersonRoomNormal
 
+mDragHeightCeiling.f32
+mStickFactorRangeSpecial.Rangef
+cBirdViewLeft
+cBirdViewRight
+cFirstPersonRoomFar
+cFirstPersonRoomNear
+cFirstPersonRoomNormal
+mRemakeFence
+Cnut
+GlDr
+Trwl
+DStk
+Pitc
+SpnR
+Glass
+cFirstPersonIdrNormal
+mShowIconOffsetCoZ.f32
+mShowIconOffsetCoY.f32
+mShowIconOffsetCoX.f32
+mSWalkInAddCalcRate.f32
+mSWalkOutAddCalcRate.f32
+mFoodPowerT.s32
+mFoodPowerN.s32
+StampRackData[]
+mMuseumStageName.s32
+mStampRackID.s32
+mCArray[]
+mRemakeFenceScale.f32
+SpannerR
+DishStack
+SwRing

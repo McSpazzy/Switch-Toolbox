@@ -6,6 +6,8 @@ using OpenTK;
 using System.Text;
 using System.Threading;
 using System.Globalization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Toolbox.Library.Animations
 {
@@ -331,7 +333,126 @@ namespace Toolbox.Library.Animations
             }
         }
 
+        public static void Save454(Animation anim, STSkeleton Skeleton, String Fname)
+        {
+            System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
+            customCulture.NumberFormat.NumberDecimalSeparator = ".";
+            //  anim.SetFrame(0);
+
+            for (int i = 0; i <= anim.FrameCount; i++)
+            {
+                var sbs = new StringBuilder();
+
+                sbs.AppendLine($"import {{ Pose }} from '../Pose';");
+                sbs.AppendLine($"");
+
+
+                sbs.AppendLine($"export const {anim.Text}: Pose = {{");
+                sbs.AppendLine($"    name: '{anim.Text}',");
+                sbs.AppendLine($"    bones: {{");
+
+                //   anim.NextFrame(Skeleton, false, true);
+
+                foreach (Animation.KeyNode node in anim.Bones)
+                {
+                    //  STBone b = Skeleton.GetBone(sb.Text);
+                    //  if (b == null) continue;
+                    //      Vector3 translate = b.GetPosition();
+
+                    var b = new STBone();
+
+                    if (node.XROT.HasAnimation() || node.YROT.HasAnimation() || node.ZROT.HasAnimation())
+                    {
+                        if (node.RotType == Animation.RotationType.QUATERNION)
+                        {
+                            Animation.KeyFrame[] x = node.XROT.GetFrame(0);
+                            Animation.KeyFrame[] y = node.YROT.GetFrame(0);
+                            Animation.KeyFrame[] z = node.ZROT.GetFrame(0);
+                            Animation.KeyFrame[] w = node.WROT.GetFrame(0);
+                            Quaternion q1 = new Quaternion(x[0].Value, y[0].Value, z[0].Value, w[0].Value);
+                            Quaternion q2 = new Quaternion(x[1].Value, y[1].Value, z[1].Value, w[1].Value);
+                            if (x[0].Frame == 0)
+                                b.rot = q1;
+                            else
+                            if (x[1].Frame == 0)
+                                b.rot = q2;
+                            else
+                                b.rot = Quaternion.Slerp(q1, q2, (0 - x[0].Frame) / (x[1].Frame - x[0].Frame));
+                        }
+                        else
+                        if (node.RotType == Animation.RotationType.EULER)
+                        {
+                            float x = node.XROT.HasAnimation() ? node.XROT.GetValue(0) : b.EulerRotation.X;
+                            float y = node.YROT.HasAnimation() ? node.YROT.GetValue(0) : b.EulerRotation.Y;
+                            float z = node.ZROT.HasAnimation() ? node.ZROT.GetValue(0) : b.EulerRotation.Z;
+                            b.rot = Animation.EulerToQuat(z, y, x);
+                        }
+                    }
+
+                    if (node.Text == "Feel")
+                    {
+
+                    }
+
+                    var px = node.XPOS.GetValue(0);
+                    var py = node.YPOS.GetValue(0);
+                    var pz = node.ZPOS.GetValue(0);
+
+
+                    sbs.AppendLine($"        {node.Text}: {{ x: {px}, y: {py}, z: {pz}, rx: {b.rot.X}, ry: {b.rot.Y}, rz: {b.rot.Z}, rw: {b.rot.W} }},");
+                }
+                sbs.AppendLine($"    }}");
+                sbs.AppendLine($"}};");
+
+                File.WriteAllText(Fname.Replace(".smd", $"-{i}.ts"), sbs.ToString());
+            }
+
+        }
+
+
         public static void Save(Animation anim, STSkeleton Skeleton, String Fname)
+        {
+            System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo) System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
+            customCulture.NumberFormat.NumberDecimalSeparator = ".";
+            anim.SetFrame(0);
+
+            for (int i = 0; i <= anim.FrameCount; i++)
+            {
+                var sbs = new StringBuilder();
+
+                sbs.AppendLine($"import {{ Pose }} from '../Pose';");
+                sbs.AppendLine($"");
+
+
+                sbs.AppendLine($"export const {anim.Text}: Pose = {{");
+                sbs.AppendLine($"    name: '{anim.Text}',");
+                sbs.AppendLine($"    bones: {{");
+
+
+
+                anim.NextFrame(Skeleton, false, true);
+
+
+
+                foreach (Animation.KeyNode sb in anim.Bones)
+                {
+
+                    STBone b = Skeleton.GetBone(sb.Text);
+                    if (b == null) continue;
+                    Vector3 translate = b.GetPosition();
+
+
+                    sbs.AppendLine($"        {b.Text}: {{ x: {translate.X}, y: {translate.Y}, z: {translate.Z}, rx: {b.rot.X}, ry: {b.rot.Y}, rz: {b.rot.Z}, rw: {b.rot.W} }},");
+                }
+                sbs.AppendLine($"    }}");
+                sbs.AppendLine($"}};");
+
+                File.WriteAllText(Fname.Replace(".smd", $"-{i}.ts"), sbs.ToString());
+            }
+
+        }
+
+        public static void SaveOld(Animation anim, STSkeleton Skeleton, String Fname)
         {
             System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
             customCulture.NumberFormat.NumberDecimalSeparator = ".";
@@ -363,7 +484,9 @@ namespace Toolbox.Library.Animations
                         Vector3 scale = b.GetScale();
                         Vector3 translate = b.GetPosition();
 
-                        file.WriteLine($"{ Skeleton.bones.IndexOf(b)} {translate.X} {translate.Y} {translate.Z} {eul.X} {eul.Y} {eul.Z}");
+                        //file.WriteLine($"{ Skeleton.bones.IndexOf(b)} {translate.X} {translate.Y} {translate.Z} {b.rot.X} {b.rot.Y} {b.rot.Z} {b.rot.W}");
+                        //file.WriteLine($"{ Skeleton.bones.IndexOf(b)} {0} {0} {0} {eul.X} {eul.Y} {eul.Z}");
+                        file.WriteLine($"{b.Text}:{{x:{translate.X},y:{translate.Y},z:{translate.Z},rx:{b.rot.X},ry:{b.rot.Y},rz:{b.rot.Z},rw:{b.rot.W}}},");
                     }
 
                 }

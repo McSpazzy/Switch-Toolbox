@@ -190,10 +190,9 @@ namespace Bfres.Structs
             {
                 STSkeleton skeleton = GetActiveSkeleton();
 
-                if (skeleton != null)
+        
                     SMD.Save(this, skeleton, FileName);
-                else
-                    throw new Exception("No skeleton found to assign!");
+
             }
             else if (ext == ".anim")
             {

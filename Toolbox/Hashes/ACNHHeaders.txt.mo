@@ -1554,3 +1554,8 @@ FlagPlayerAnnounceReady s32
 FlagLandReady s32
 PlacementOfficeType.hshCstringRef
 LandTempFlagKeyOFF string32
+
+NpcLabel string32
+CaptureCookingIcon u8
+NpcLabel2 string32
+FlagPlayerAnnounceUnlock s32

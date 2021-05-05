@@ -282,6 +282,7 @@ namespace BrawlboxHelper
 
         public static void Fska2Chr0(SkeletalAnim fska, string FileName)
         {
+            return;
             Console.WriteLine("Making CHR0Node");
             CHR0Node chr0 = new CHR0Node();
             Console.WriteLine("Created CHR0Node");

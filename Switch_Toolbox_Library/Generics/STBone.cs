@@ -101,7 +101,7 @@ namespace Toolbox.Library
         }
 
         public Vector3 pos = Vector3.Zero, sca = new Vector3(1f, 1f, 1f);
-        public Quaternion rot = Quaternion.Identity;
+        public Quaternion rot { get; set; } = Quaternion.Identity;
         public Matrix4 invert;
 
         public Matrix4 GetTransform()
