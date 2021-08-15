@@ -54,6 +54,7 @@ namespace FirstPlugin
         }
 
         private static new Dictionary<uint, string> hashes = new Dictionary<uint, string>();
+        public static Dictionary<ulong, string> mmhashes = new Dictionary<ulong, string>();
 
         public static Dictionary<uint, string> Hashes
         {
@@ -80,6 +81,19 @@ namespace FirstPlugin
                     CheckHash(hashStr);
                 }
             }
+
+            foreach (var file in Directory.GetFiles(dir, "*.wk"))
+            {
+                foreach (var hashStr in File.ReadAllLines(file))
+                {
+                    var l = hashStr.Split(new string[] {"\": \""}, StringSplitOptions.RemoveEmptyEntries);
+                    if (l.Length > 1)
+                    {
+                        CheckHash(l[1].Replace(",", "").Replace("\"", ""));
+                    }
+                    
+                }
+            }
         }
 
         private static void CheckHash(string hashStr)
@@ -87,6 +101,10 @@ namespace FirstPlugin
             uint hash = Crc32.Compute(hashStr);
             if (!hashes.ContainsKey(hash))
                 hashes.Add(hash, hashStr);
+
+            uint mmhash = MurMurHash3.Hash(hashStr);
+            if (!mmhashes.ContainsKey(mmhash))
+                mmhashes.Add(mmhash, hashStr);
         }
 
         #region Text Converter Interface

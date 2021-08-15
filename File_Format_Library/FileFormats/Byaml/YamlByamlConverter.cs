@@ -24,6 +24,7 @@ namespace FirstPlugin
 
         public static List<string> HashesOut = new List<string>();
         public static List<string> HashesOut2 = new List<string>();
+        public static List<string> HashesOut3 = new List<string>();
 
         //id to keep track of reference nodes
         static int refNodeId = 0;
@@ -64,7 +65,7 @@ namespace FirstPlugin
             NodePaths.Clear();
             refNodeId = 0;
             var doc = new YamlDocument(mapping);
-
+            
             YamlStream stream = new YamlStream(doc);
             var buffer = new StringBuilder();
             using (var writer = new StringWriter(buffer)) {
@@ -209,8 +210,49 @@ namespace FirstPlugin
                     ((IList<dynamic>)node).Count < 6)
                     yamlNode.Style = SharpYaml.YamlStyle.Flow;
 
-                foreach (var item in (IList<dynamic>)node)
+                foreach (var item in (IList<dynamic>) node)
+                {
+
+                    try
+                    {
+
+                        if (item is ulong || item is uint || item is long || item is int)
+                        {
+                            var val = (ulong)item;
+
+                            if (val != 0)
+                            {
+                                if (BYAML.mmhashes.ContainsKey(val))
+                                {
+                                    var hashVal = BYAML.mmhashes[val];
+                                    yamlNode.Add(SaveNode(null, hashVal));
+                                    if (!HashesOut2.Contains(hashVal))
+                                    {
+                                        HashesOut2.Add(hashVal);
+                                    }
+
+                                    continue;
+                                }
+                                else
+                                {
+                                    var hashValOut = item.ToString("X");
+                                    if (!HashesOut3.Contains(hashValOut))
+                                    {
+                                        HashesOut3.Add(hashValOut);
+
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+
                     yamlNode.Add(SaveNode(null, item));
+                }
 
                 return yamlNode;
             }
@@ -229,10 +271,21 @@ namespace FirstPlugin
                     YamlNode keyNode = new YamlScalarNode(key);
                     if (BYAML.IsHash(key))
                     {
-                        uint hash = Convert.ToUInt32(key, 16);
+                       uint hash = Convert.ToUInt32(key, 16);
                         if (BYAML.Hashes.ContainsKey(hash))
                         {
                             key = $"{BYAML.Hashes[hash]}";
+                            if (!key.Contains('.'))
+                            {
+                                if (!HashesOut2.Contains(key))
+                                {
+                                    HashesOut2.Add(key);
+                                }
+                            }
+                        }
+                        else if (BYAML.mmhashes.ContainsKey(hash))
+                        {
+                            key = $"{BYAML.mmhashes[hash]}";
                             if (!key.Contains('.'))
                             {
                                 if (!HashesOut2.Contains(key))
@@ -253,7 +306,58 @@ namespace FirstPlugin
                         keyNode = new YamlScalarNode(key);
                         keyNode.Tag = "!h";
                     }
+                    string hashVal;
+                    string hashValOut;
+
+                    if (key == "Environment")
+                    {
+
+                    }
+
+                    try
+                    {
+                  
+                        if (item.Value is ulong || item.Value is uint || item.Value is long || item.Value is int)
+                        {
+                            var val = (ulong)item.Value;
+
+                            if (val == 4133009356)
+                            {
+
+                            }
+
+                            if (val != 0)
+                            {
+                                if (BYAML.mmhashes.ContainsKey(val))
+                                {
+                                    hashVal = BYAML.mmhashes[val];
+                                    yamlNode.Add(keyNode, SaveNode(item.Key, hashVal));
+                                    if (!HashesOut2.Contains(hashVal))
+                                    {
+                                        HashesOut2.Add(hashVal);
+                                    }
+
+                                    continue;
+                                }
+                                else
+                                {
+                                    hashValOut = item.Value.ToString("X");
+                                    if (!HashesOut3.Contains(hashValOut))
+                                    {
+                                        HashesOut3.Add(hashValOut);
+
+                                    }
+                                }
+                            }
+                            
+                        }
+                    }
+                    catch(Exception ex) {
+
+                    }
+
                     yamlNode.Add(keyNode, SaveNode(item.Key, item.Value));
+
                 }
                 return yamlNode;
             }

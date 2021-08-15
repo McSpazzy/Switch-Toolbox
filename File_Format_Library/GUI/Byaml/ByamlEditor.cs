@@ -237,6 +237,16 @@ namespace FirstPlugin
                 string NameText = k;
                 string TypeText = "";
 
+                uint hash = Convert.ToUInt32(k, 16);
+                if (BYAML.Hashes.ContainsKey(hash))
+                {
+                    NameText = BYAML.Hashes[hash];
+                }
+                else if (BYAML.mmhashes.ContainsKey(hash))
+                {
+                    NameText = BYAML.mmhashes[hash];
+                }
+
                 if (node[k] == null)
                     TypeText = "NULL";
                 else
@@ -247,6 +257,7 @@ namespace FirstPlugin
                 ListViewItem item = new ListViewItem(NameText);
                 item.SubItems.Add(TypeString);
                 item.SubItems.Add(ValueText);
+                item.SubItems.Add(k);
                 if (node[k] != null) item.Tag = new EditableNode(node, k);
 
                 if (NameText == "name_en")
@@ -305,6 +316,16 @@ namespace FirstPlugin
                     node[k] is IList<ByamlPathPoint>)
                 {
                     TreeNode current = addto.Add(k);
+
+                    uint hash = Convert.ToUInt32(k, 16);
+                    if (BYAML.Hashes.ContainsKey(hash))
+                    {
+                        current.Text = BYAML.Hashes[hash] + " : " + k;
+                    }
+                    else if (BYAML.mmhashes.ContainsKey(hash))
+                    {
+                        current.Text = BYAML.mmhashes[hash];
+                    }
 
                     if (node[k] is IDictionary<string, dynamic>)
                     {

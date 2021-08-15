@@ -41,6 +41,7 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.stPanel1 = new Toolbox.Library.Forms.STPanel();
+            this.chkShiftJISEncoding = new Toolbox.Library.Forms.STCheckBox();
             this.stTabControl1 = new Toolbox.Library.Forms.STTabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -48,6 +49,7 @@
             this.listViewCustom1 = new Toolbox.Library.Forms.ListViewCustom();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.stPanel4 = new Toolbox.Library.Forms.STPanel();
@@ -60,7 +62,6 @@
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyDataAsTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.chkShiftJISEncoding = new Toolbox.Library.Forms.STCheckBox();
             this.contextMenuStrip1.SuspendLayout();
             this.stPanel1.SuspendLayout();
             this.stTabControl1.SuspendLayout();
@@ -167,6 +168,17 @@
             this.stPanel1.Size = new System.Drawing.Size(549, 398);
             this.stPanel1.TabIndex = 15;
             // 
+            // chkShiftJISEncoding
+            // 
+            this.chkShiftJISEncoding.AutoSize = true;
+            this.chkShiftJISEncoding.Location = new System.Drawing.Point(7, 3);
+            this.chkShiftJISEncoding.Name = "chkShiftJISEncoding";
+            this.chkShiftJISEncoding.Size = new System.Drawing.Size(135, 17);
+            this.chkShiftJISEncoding.TabIndex = 1;
+            this.chkShiftJISEncoding.Text = "Use Shift JIS Encoding";
+            this.chkShiftJISEncoding.UseVisualStyleBackColor = true;
+            this.chkShiftJISEncoding.CheckedChanged += new System.EventHandler(this.chkShiftJISEncoding_CheckedChanged);
+            // 
             // stTabControl1
             // 
             this.stTabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -228,7 +240,8 @@
             this.listViewCustom1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
-            this.columnHeader3});
+            this.columnHeader3,
+            this.columnHeader4});
             this.listViewCustom1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewCustom1.FullRowSelect = true;
             this.listViewCustom1.HideSelection = false;
@@ -251,10 +264,14 @@
             this.columnHeader2.Text = "Type";
             this.columnHeader2.Width = 93;
             // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Hash";
+            // 
             // columnHeader3
             // 
             this.columnHeader3.Text = "Data";
-            this.columnHeader3.Width = 146;
+            this.columnHeader3.Width = 86;
             // 
             // tabPage2
             // 
@@ -264,7 +281,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(541, 369);
+            this.tabPage2.Size = new System.Drawing.Size(541, 349);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Text Editor";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -274,7 +291,7 @@
             this.stPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.stPanel4.Location = new System.Drawing.Point(3, 3);
             this.stPanel4.Name = "stPanel4";
-            this.stPanel4.Size = new System.Drawing.Size(535, 363);
+            this.stPanel4.Size = new System.Drawing.Size(535, 343);
             this.stPanel4.TabIndex = 4;
             // 
             // stPanel3
@@ -351,17 +368,6 @@
             this.copyDataAsTextToolStripMenuItem.Text = "Copy data as text";
             this.copyDataAsTextToolStripMenuItem.Click += new System.EventHandler(this.copyDataAsTextToolStripMenuItem_Click);
             // 
-            // chkShiftJISEncoding
-            // 
-            this.chkShiftJISEncoding.AutoSize = true;
-            this.chkShiftJISEncoding.Location = new System.Drawing.Point(7, 3);
-            this.chkShiftJISEncoding.Name = "chkShiftJISEncoding";
-            this.chkShiftJISEncoding.Size = new System.Drawing.Size(135, 17);
-            this.chkShiftJISEncoding.TabIndex = 1;
-            this.chkShiftJISEncoding.Text = "Use Shift JIS Encoding";
-            this.chkShiftJISEncoding.UseVisualStyleBackColor = true;
-            this.chkShiftJISEncoding.CheckedChanged += new System.EventHandler(this.chkShiftJISEncoding_CheckedChanged);
-            // 
             // ByamlEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -419,5 +425,6 @@
         private Toolbox.Library.Forms.STPanel stPanel3;
         private Toolbox.Library.Forms.STPanel stPanel4;
         private Toolbox.Library.Forms.STCheckBox chkShiftJISEncoding;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
     }
 }
