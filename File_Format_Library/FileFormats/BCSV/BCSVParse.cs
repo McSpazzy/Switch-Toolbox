@@ -85,6 +85,8 @@ namespace FirstPlugin
                     reader.SeekBegin(pos + fields[f].Offset);
                     object value = 0;
                     string name = fields[f].Hash.ToString("x");
+                    if (Hashes.ContainsKey(fields[f].Hash))
+                        name = Hashes[fields[f].Hash];
                     switch (type)
                     {
                         case DataType.Byte:
@@ -97,11 +99,23 @@ namespace FirstPlugin
                             value = reader.ReadInt16();
                             break;
                         case DataType.Int32:
-                            value = reader.ReadInt32();
-                            if (IsFloatValue((int)value))
+                            var valueInt = reader.ReadInt32();
+                            value = valueInt;
+                            if (Hashes.ContainsKey((uint)valueInt))
                             {
-                                reader.Seek(-4);
-                                value = reader.ReadSingle();
+                                value = Hashes[(uint)valueInt];
+                            }
+                            else if (name.Contains("hshCstringRef"))
+                            {
+                                value = $"CRC32:{valueInt:X}";
+                            }
+                            else
+                            {
+                                if (IsFloatValue(valueInt))
+                                {
+                                    reader.Seek(-4);
+                                    value = reader.ReadSingle();
+                                }
                             }
                             break;
                         case DataType.String:
@@ -109,8 +123,6 @@ namespace FirstPlugin
                             break;
                     }
 
-                    if (Hashes.ContainsKey(fields[f].Hash))
-                        name = Hashes[fields[f].Hash];
 
                     entry.Fields.Add(name, value);
                 }
