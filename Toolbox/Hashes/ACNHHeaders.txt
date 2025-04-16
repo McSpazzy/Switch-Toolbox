@@ -1492,7 +1492,6 @@ IsSelectQuestM u8
 FlagPlayerAnnounce s32
 FacePaint u16
 SkinColor u16
-SkinBushA s8
 DisableInDream u8
 UseCollision u8
 OffsetAccWeed s8

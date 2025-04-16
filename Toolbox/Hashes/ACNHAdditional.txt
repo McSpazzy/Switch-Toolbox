@@ -1779,8 +1779,6 @@ mChristmasSmilingTimerMax.s32
 mChristmasSmilingTimerMin.s32
 mChristmasTakePhotoRatio.s32
 mChristmasWatchRatio.s32
-McMessagePageIdx[].u32
-McMyDesignSearchID.C4f
 mColorIntensity.f32
 mCommandDataFourCount[].Enum
 mCommandDataThreeCount[].Enum
@@ -3441,3 +3439,117 @@ Z
 マルチボーダーニット・ブラック×コーラル×
 マルチボーダーニット・ホワイト×イエロー×
 マルチボーダーニット・ホワイト×ブルー×グ
+HaLa
+TopsTexOnepieceBalloonHSteampunk
+TopsTexOnepieceSalopetteLCarnival
+TopsTexOnepieceSalopetteLHalloween
+TopsTexOnepieceSalopetteHKeroppi
+TopsTexOnepieceSalopetteHUniform
+TopsTexOnepieceSalopetteLShamrock0
+TopsTexOnepieceSalopetteemmLMoss
+TopsTexOnepieceKimonoLCrestedWhite
+BottomsTexPantsWideSlacksteacher
+TopsTexOnepieceOverallLColorsuits
+BottomsTexPantsNormalSlackspattern
+PointList u8
+ASCommand string65
+ConnectIcon string48
+Label string33
+Month2 u8
+Month3 u8
+Seat0 u16
+Seat1 u16
+Seat2 u16
+Seat3 u16
+FacilityActionType0.hshCstringRef
+FacilityActionType1.hshCstringRef
+FacilityActionType2.hshCstringRef
+FacilityActionType3.hshCstringRef
+FacilityActionType4.hshCstringRef
+FacilityActionType5.hshCstringRef
+FacilityActionType6.hshCstringRef
+FacilityActionType7.hshCstringRef
+FacilityActionType8.hshCstringRef
+AprilEvening2
+BenchDrinkingCoffee
+CarnivalReady
+HarvestFestival
+MAIL_OT_ValentineDay
+MAIL_KO_Quest_VisitP
+MAIL_KO_ValentineDay
+MAIL_AN_Quest_VisitN
+MAIL_AN_Quest_VisitP
+MAIL_ZK_ValentineDay
+MAIL_ZK_Game
+MAIL_FU_ValentineDay
+MAIL_GE_Game
+MAIL_GE_Quest_VisitN
+MAIL_GE_Quest_VisitP
+MAIL_ZK_Quest_VisitN
+MAIL_ZK_Quest_VisitP
+MAIL_HA_ValentineDay
+MAIL_KO_Game
+MAIL_KO_Quest_VisitN
+MAIL_BO_ValentineDay
+MAIL_FU_Game
+MAIL_FU_Quest_VisitN
+MAIL_FU_Quest_VisitP
+MAIL_OT_Game
+MAIL_OT_Quest_VisitN
+MAIL_OT_Quest_VisitP
+MAIL_AN_Game
+MAIL_GE_ValentineDay
+MAIL_HA_Game
+MAIL_HA_Quest_VisitN
+MAIL_HA_Quest_VisitP
+MAIL_SNpc_bpt
+MAIL_SNpc_man
+MAIL_SNpc_mnc_Wherearen
+MAIL_SNpc_otg_Wherearen
+MAIL_SNpc_owl
+MAIL_SNpc_slo
+MAIL_SNpc_spn
+MAIL_SNpc_sza
+MAIL_SNpc_xct
+MAIL_SP_Blanco
+MAIL_AN_ValentineDay
+MAIL_BO_Game
+MAIL_BO_Quest_VisitN
+MAIL_BO_Quest_VisitP
+PicnicCoffee
+WOffice
+WT
+WC
+WS
+WH
+WR
+XmasAfter
+XmasEve
+XmasReady1
+XmasReady2
+MAIL_HA_FortuneItem
+MAIL_KO_FortuneFriendship
+MAIL_KO_FortuneItem
+MAIL_BO_FortuneFriendship
+MAIL_BO_FortuneItem
+MAIL_HA_FortuneFriendship
+MAIL_FU_FortuneItem
+MAIL_GE_FortuneFriendship
+MAIL_GE_FortuneItem
+MAIL_OT_FortuneFriendship
+MAIL_OT_FortuneItem
+MAIL_AN_FortuneFriendship
+MAIL_AN_FortuneItem
+MAIL_ZK_FortuneFriendship
+MAIL_ZK_FortuneItem
+MAIL_FU_FortuneFriendship
+MAIL_RND_MsgE_AN
+MAIL_RND_MsgE_BO
+MAIL_RND_MsgE_FU
+MAIL_RND_MsgE_GE
+MAIL_RND_MsgE_HA
+MAIL_RND_MsgE_KO
+MAIL_RND_MsgE_OT
+MAIL_RND_MsgE_ZK
+GardenEdit u16
+SortID s16

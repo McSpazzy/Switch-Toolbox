@@ -26,6 +26,8 @@ namespace FirstPlugin
         }
 
         static Dictionary<uint, string> hashes = new Dictionary<uint, string>();
+        static Dictionary<uint, string> mmhhashes = new Dictionary<uint, string>();
+
         public static Dictionary<uint, string> Hashes
         {
             get
@@ -33,6 +35,16 @@ namespace FirstPlugin
                 if (hashes.Count == 0)
                     CalculateHashes();
                 return hashes;
+            }
+        }
+
+        public static Dictionary<uint, string> MmhHashes
+        {
+            get
+            {
+                if (mmhhashes.Count == 0)
+                    CalculateHashes();
+                return mmhhashes;
             }
         }
 
@@ -87,6 +99,9 @@ namespace FirstPlugin
                     string name = fields[f].Hash.ToString("x");
                     if (Hashes.ContainsKey(fields[f].Hash))
                         name = Hashes[fields[f].Hash];
+
+                    if (name.Contains(" string")) type = DataType.String; // needed for some ACNH fields
+
                     switch (type)
                     {
                         case DataType.Byte:
@@ -104,6 +119,10 @@ namespace FirstPlugin
                             if (Hashes.ContainsKey((uint)valueInt))
                             {
                                 value = Hashes[(uint)valueInt];
+                            }
+                            else if (MmhHashes.ContainsKey((uint)valueInt))
+                            {
+                                value = MmhHashes[(uint)valueInt];
                             }
                             else if (name.Contains("hshCstringRef"))
                             {
@@ -173,6 +192,10 @@ namespace FirstPlugin
             uint hash = Crc32.Compute(hashStr);
             if (!hashes.ContainsKey(hash))
                 hashes.Add(hash, hashStr);
+
+            uint mmhhash = MurMurHash3.Hash(hashStr);
+            if (!mmhhashes.ContainsKey(mmhhash))
+                mmhhashes.Add(mmhhash, hashStr);
         }
     }
 }
