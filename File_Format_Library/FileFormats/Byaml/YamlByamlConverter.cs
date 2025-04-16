@@ -10,6 +10,7 @@ using System.Globalization;
 using Syroot.BinaryData;
 using ByamlExt.Byaml;
 using Toolbox.Library.Security.Cryptography;
+using static Toolbox.Library.Animations.Animation;
 
 namespace FirstPlugin
 {
@@ -233,6 +234,12 @@ namespace FirstPlugin
                             keyNode = new YamlScalarNode(key);
                             keyNode.Tag = "!h";
                         }
+                        else if (BYAML.MmhHashes.ContainsKey(hash))
+                        {
+                            key = $"{BYAML.MmhHashes[hash]}";
+                            keyNode = new YamlScalarNode(key);
+                            keyNode.Tag = "!h";
+                        }
                     }
                     yamlNode.Add(keyNode, SaveNode(item.Key, item.Value));
                 }
@@ -251,6 +258,7 @@ namespace FirstPlugin
             }
             else
             {
+                string key = null;
                 string tag = null;
                 if (node is int) tag = "!l";
                 else if (node is uint) tag = "!u";
@@ -258,8 +266,22 @@ namespace FirstPlugin
                 else if (node is UInt64) tag = "!ul";
                 else if (node is double) tag = "!d";
                 else if (node is ByamlPathIndex) tag = "!p";
+                
+                if (tag == "!u" || tag == "!l" && node > 255)
+                {
+                    if (BYAML.Hashes.ContainsKey((uint)node))
+                    {
+                        key = $"{BYAML.Hashes[(uint)node]}";
+                        tag = null;
+                    }
+                    else if (BYAML.MmhHashes.ContainsKey((uint)node))
+                    {
+                        key = $"{BYAML.MmhHashes[(uint)node]}";
+                        tag = null;
+                    }
+                }
 
-                var yamlNode = new YamlScalarNode(ConvertValue(node));
+                var yamlNode = new YamlScalarNode(ConvertValue(key ?? node));
                 if (tag != null) yamlNode.Tag = tag;
                 return yamlNode;
             }

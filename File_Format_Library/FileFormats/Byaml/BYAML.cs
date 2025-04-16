@@ -54,6 +54,7 @@ namespace FirstPlugin
         }
 
         private static new Dictionary<uint, string> hashes = new Dictionary<uint, string>();
+        private static new Dictionary<uint, string> mmhhashes = new Dictionary<uint, string>();
 
         public static Dictionary<uint, string> Hashes
         {
@@ -62,6 +63,16 @@ namespace FirstPlugin
                 if (hashes.Count == 0)
                     CreateHashList();
                 return hashes;
+            }
+        }
+
+        public static Dictionary<uint, string> MmhHashes
+        {
+            get
+            {
+                if (mmhhashes.Count == 0)
+                    CreateHashList();
+                return mmhhashes;
             }
         }
 
@@ -87,6 +98,10 @@ namespace FirstPlugin
             uint hash = Crc32.Compute(hashStr);
             if (!hashes.ContainsKey(hash))
                 hashes.Add(hash, hashStr);
+
+            uint mmhhash = MurMurHash3.Hash(hashStr);
+            if (!mmhhashes.ContainsKey(mmhhash))
+                mmhhashes.Add(mmhhash, hashStr);
         }
 
         #region Text Converter Interface
