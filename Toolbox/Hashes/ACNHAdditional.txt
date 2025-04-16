@@ -3553,3 +3553,9 @@ MAIL_RND_MsgE_OT
 MAIL_RND_MsgE_ZK
 GardenEdit u16
 SortID s16
+MAIL_SNpc_man-101
+MAIL_SNpc_man-105
+MAIL_SNpc_rco-113
+MAIL_SNpc_rco-114
+MAIL_SNpc_rco-115
+MAIL_SNpc_rco-116
